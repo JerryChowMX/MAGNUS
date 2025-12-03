@@ -3,26 +3,114 @@
     top: 0;
     z-index: 100;
     width: 100%;
-    background-color: var(--color-background);
-    border-bottom: 1px solid transparent;
+    height: 120px;
+    /* Base height */
+    display: flex;
+    align-items: flex-end;
+    /* Push controls to bottom */
+    justify-content: space-between;
+    padding: 0 var(--spacing-md) 16px var(--spacing-md);
+    /* Add bottom padding */
     transition: all 0.3s ease;
-    padding: var(--spacing-md) 0;
+
+    /* Glassmorphism Base */
+    backdrop-filter: blur(var(--glass-blur-header));
+    -webkit-backdrop-filter: blur(var(--glass-blur-header));
+    box-shadow: var(--glass-shadow-header);
 }
 
+/* Light Mode Variant */
+.header-content--light {
+    background: var(--glass-bg-header-light);
+    color: var(--color-text-primary);
+}
+
+/* Dark Mode Variant */
+.header-content--dark {
+    background: var(--glass-bg-header-dark);
+    color: #FFFFFF;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Scrolled State */
 .header-content--scrolled {
-    background-color: var(--glass-bg-light);
-    backdrop-filter: blur(var(--glass-blur));
-    -webkit-backdrop-filter: blur(var(--glass-blur));
-    border-bottom: 1px solid var(--glass-border-light);
-    padding: var(--spacing-sm) 0;
-    box-shadow: var(--shadow-sm);
+    height: 80px;
+    /* Shrink on scroll */
 }
 
-.header-content--dark.header-content--scrolled {
-    background-color: var(--glass-bg-dark);
-    border-bottom: 1px solid var(--glass-border-dark);
+/* Left: Back Button */
+.header-content__back {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: var(--spacing-xs);
+    color: inherit;
+    height: 40px;
+    /* Fixed height for alignment */
+    width: 40px;
 }
 
-.header-content__inner {
-    min-height: 48px;
+.header-content__back svg {
+    width: 24px;
+    height: 24px;
+}
+
+/* Center: Logo Block */
+.header-content__logo-block {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /* Perfect center */
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.header-content__logo {
+    font-family: var(--font-family-display);
+    font-weight: 900;
+    /* Black/ExtraBold */
+    font-size: 3.5rem;
+    /* Significantly larger */
+    line-height: 0.9;
+    letter-spacing: -0.04em;
+}
+
+.header-content__vanguardia {
+    font-family: var(--font-family-display);
+    font-weight: var(--font-weight-bold);
+    font-size: 0.75rem;
+    /* Slightly larger */
+    color: var(--color-brand-orange);
+    letter-spacing: 0.2em;
+    /* Wider spacing */
+    text-transform: uppercase;
+    margin-top: 4px;
+}
+
+/* Right: Share Button */
+.header-content__share {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: var(--spacing-xs);
+    color: inherit;
+    height: 40px;
+    /* Match back button height for alignment */
+    width: 40px;
+}
+
+.header-content__share svg {
+    width: 24px;
+    height: 24px;
 }

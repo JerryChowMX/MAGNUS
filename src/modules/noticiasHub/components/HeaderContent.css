@@ -1,0 +1,28 @@
+.header-content {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    width: 100%;
+    background-color: var(--color-background);
+    border-bottom: 1px solid transparent;
+    transition: all 0.3s ease;
+    padding: var(--spacing-md) 0;
+}
+
+.header-content--scrolled {
+    background-color: var(--glass-bg-light);
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    border-bottom: 1px solid var(--glass-border-light);
+    padding: var(--spacing-sm) 0;
+    box-shadow: var(--shadow-sm);
+}
+
+.header-content--dark.header-content--scrolled {
+    background-color: var(--glass-bg-dark);
+    border-bottom: 1px solid var(--glass-border-dark);
+}
+
+.header-content__inner {
+    min-height: 48px;
+}

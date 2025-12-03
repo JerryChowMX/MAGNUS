@@ -1,0 +1,74 @@
+import React from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { PageWrapper } from '../../../components/Layout/PageWrapper';
+import { Section, Stack } from '../../../components/Layout';
+import { Headline, Body } from '../../../components/Typography/Typography';
+import { HeaderContent } from '../components/HeaderContent';
+import { useNoticiasArticle } from '../hooks/useNoticiasArticle';
+import type { ArticleFormat } from '../types/noticias.types';
+
+import './NoticiasArticleFormatPage.css';
+
+export const NoticiasArticleFormatPage: React.FC = () => {
+    const { date, slug, format } = useParams<{ date: string; slug: string; format: string }>();
+    const navigate = useNavigate();
+    const { article, isLoading, error } = useNoticiasArticle(slug || '');
+
+    if (isLoading) return <PageWrapper><Section padding="md"><Body>Loading...</Body></Section></PageWrapper>;
+    if (error || !article) return <PageWrapper><Section padding="md"><Body>Article not found.</Body></Section></PageWrapper>;
+
+    const renderContent = () => {
+        switch (format as ArticleFormat) {
+            case 'original':
+                return (
+                    <Stack spacing="md">
+                        <Headline level={3}>Nota Original</Headline>
+                        <Body>{article.content}</Body>
+                    </Stack>
+                );
+            case 'ejecutivo':
+                return (
+                    <Stack spacing="md">
+                        <Headline level={3}>Resumen Ejecutivo</Headline>
+                        <Body>{article.summary}</Body>
+                        <Body>Here are the key bullet points...</Body>
+                    </Stack>
+                );
+            case 'audio':
+                return (
+                    <Stack spacing="md">
+                        <Headline level={3}>Resumen de Audio</Headline>
+                        <div className="audio-player-placeholder">
+                            [Audio Player Placeholder]
+                        </div>
+                    </Stack>
+                );
+            case 'guiada':
+                return (
+                    <Stack spacing="md">
+                        <Headline level={3}>Presentación Guiada</Headline>
+                        <Body>Step 1: Introduction...</Body>
+                        <Body>Step 2: Details...</Body>
+                    </Stack>
+                );
+            default:
+                return <Body>Unknown format</Body>;
+        }
+    };
+
+    return (
+        <PageWrapper>
+            <HeaderContent
+                onBack={() => navigate(`/NoticiasHub/${date}/${slug}`)}
+                onShare={() => alert('Share clicked')}
+            />
+
+            <Section padding="md">
+                <Stack spacing="lg">
+                    <Headline level={2}>{article.title}</Headline>
+                    {renderContent()}
+                </Stack>
+            </Section>
+        </PageWrapper>
+    );
+};

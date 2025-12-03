@@ -1,0 +1,98 @@
+/* Custom styles for react-datepicker to match Magnus theme */
+
+.magnus-datepicker {
+    font-family: var(--font-family-body);
+    border: none !important;
+    border-radius: var(--radius-lg) !important;
+    box-shadow: var(--shadow-lg) !important;
+    background-color: var(--color-surface) !important;
+    color: var(--color-text-primary) !important;
+    padding: var(--spacing-md);
+    overflow: hidden;
+}
+
+/* Header */
+.magnus-datepicker .react-datepicker__header {
+    background-color: transparent !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05) !important;
+    padding-top: 0;
+}
+
+.magnus-datepicker .react-datepicker__current-month {
+    font-family: var(--font-family-display);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+    margin-bottom: var(--spacing-sm);
+}
+
+.magnus-datepicker .react-datepicker__day-name {
+    color: var(--color-text-secondary);
+    font-weight: var(--font-weight-medium);
+}
+
+/* Days */
+.magnus-datepicker .react-datepicker__day {
+    color: var(--color-text-primary);
+    border-radius: var(--radius-full) !important;
+    font-weight: var(--font-weight-medium);
+    transition: all 0.2s ease;
+}
+
+.magnus-datepicker .react-datepicker__day:hover {
+    background-color: var(--color-surface) !important;
+    color: var(--color-primary) !important;
+}
+
+.magnus-datepicker .react-datepicker__day--selected,
+.magnus-datepicker .react-datepicker__day--keyboard-selected {
+    background-color: var(--color-brand-orange) !important;
+    color: #FFFFFF !important;
+}
+
+.magnus-datepicker .react-datepicker__day--today {
+    font-weight: var(--font-weight-bold);
+    color: var(--color-brand-orange);
+}
+
+/* Navigation Arrows */
+.magnus-datepicker .react-datepicker__navigation-icon::before {
+    border-color: var(--color-text-secondary) !important;
+}
+
+/* Dark Mode Overrides (if parent has dark class or system preference) */
+@media (prefers-color-scheme: dark) {
+    .magnus-datepicker {
+        background-color: #1a1a1a !important;
+        /* Dark surface */
+        color: #FFFFFF !important;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5) !important;
+    }
+
+    .magnus-datepicker .react-datepicker__header {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+    }
+
+    .magnus-datepicker .react-datepicker__current-month {
+        color: #FFFFFF;
+    }
+
+    .magnus-datepicker .react-datepicker__day-name {
+        color: #AAAAAA;
+    }
+
+    .magnus-datepicker .react-datepicker__day {
+        color: #FFFFFF;
+    }
+
+    .magnus-datepicker .react-datepicker__day:hover {
+        background-color: #333333 !important;
+    }
+
+    .magnus-datepicker .react-datepicker__day--today {
+        color: var(--color-brand-orange);
+    }
+
+    .magnus-datepicker .react-datepicker__navigation-icon::before {
+        border-color: #AAAAAA !important;
+    }
+}

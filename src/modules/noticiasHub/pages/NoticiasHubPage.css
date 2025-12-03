@@ -1,0 +1,5 @@
+/* Ensure grid gap uses tokens */
+.noticias-grid {
+    display: grid;
+    gap: var(--spacing-md);
+}

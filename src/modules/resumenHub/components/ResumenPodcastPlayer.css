@@ -1,0 +1,22 @@
+.resumen-podcast-player {
+    background-color: var(--color-surface);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+}
+
+.resumen-podcast-player__image {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+}
+
+.resumen-podcast-player__controls {
+    padding: var(--spacing-lg);
+    text-align: center;
+}
+
+.resumen-podcast-player__audio {
+    width: 100%;
+    margin-top: var(--spacing-md);
+}

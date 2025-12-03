@@ -1,0 +1,6 @@
+.audio-player-placeholder {
+    padding: 20px;
+    background: var(--color-surface);
+    border-radius: var(--radius-md);
+    text-align: center;
+}

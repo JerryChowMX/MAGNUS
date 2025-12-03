@@ -23,6 +23,11 @@ import {
     IconShield,
     IconInfoCircle,
     IconHelp,
+    IconLock,
+    IconBrandGoogle,
+    IconBrandApple,
+    IconEye,
+    IconEyeOff,
 } from '@tabler/icons-react';
 
 export const Icons = {
@@ -50,4 +55,9 @@ export const Icons = {
     privacy: IconShield,
     info: IconInfoCircle,
     help: IconHelp,
+    lock: IconLock,
+    google: IconBrandGoogle,
+    apple: IconBrandApple,
+    eye: IconEye,
+    eyeOff: IconEyeOff,
 };

@@ -12,19 +12,26 @@ import { SettingsRow } from '../components/SettingsRow';
 import { ToggleSwitch } from '../components/ToggleSwitch';
 import { OptionSelector } from '../components/OptionSelector';
 import { useProfile } from '../hooks/useProfile';
+import { useAuth } from '../../../hooks/useAuth';
 import { Body } from '../../../components/Typography/Typography';
 import './PerfilHubPage.css';
 
 export const PerfilHubPage: React.FC = () => {
     const navigate = useNavigate();
-    const { profile, settings, updateSettings, isLoading, error, isFallback } = useProfile();
+    const { user, logout } = useAuth();
+    const { settings, updateSettings, isLoading, error, isFallback } = useProfile();
 
     const handleLogin = () => {
-        console.log('Navigate to login');
+        navigate('/login');
     };
 
     const handleEditProfile = () => {
         console.log('Navigate to edit profile');
+    };
+
+    const handleLogout = () => {
+        logout();
+        navigate('/login');
     };
 
     if (isLoading) {
@@ -74,12 +81,12 @@ export const PerfilHubPage: React.FC = () => {
                 <Section padding="md">
                     <Stack spacing="lg">
                         {/* Profile Block */}
-                        {profile && (
+                        {user && (
                             <ProfileCard
                                 user={{
-                                    name: profile.name,
-                                    email: profile.email,
-                                    avatarUrl: profile.avatarUrl
+                                    name: user.name,
+                                    email: user.email,
+                                    avatarUrl: user.avatarUrl
                                 }}
                                 onLogin={handleLogin}
                                 onEdit={handleEditProfile}
@@ -89,8 +96,8 @@ export const PerfilHubPage: React.FC = () => {
                         {/* Membership Section */}
                         <SettingsSection title="Tu membresía">
                             <MembershipCard
-                                planName={profile?.plan || "Gratuito"}
-                                renewalDate="15/04/2026" // This could also come from API eventually
+                                planName={"Plan Anual"} // TODO: Add plan to user model
+                                renewalDate="15/04/2026"
                                 benefits={[
                                     "Acceso ilimitado a contenido",
                                     "Lectura sin publicidad",
@@ -164,6 +171,24 @@ export const PerfilHubPage: React.FC = () => {
                                 </div>
                             </SettingsSection>
                         )}
+
+                        <div style={{ marginTop: '20px' }}>
+                            <button
+                                onClick={handleLogout}
+                                style={{
+                                    width: '100%',
+                                    padding: '12px',
+                                    backgroundColor: '#fee2e2',
+                                    color: '#dc2626',
+                                    border: 'none',
+                                    borderRadius: '8px',
+                                    fontWeight: 600,
+                                    cursor: 'pointer'
+                                }}
+                            >
+                                Cerrar Sesión
+                            </button>
+                        </div>
                     </Stack>
                 </Section>
             </div>

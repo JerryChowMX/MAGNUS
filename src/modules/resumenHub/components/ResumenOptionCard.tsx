@@ -1,25 +1,42 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Stack } from '../../../components/Layout';
-import { Headline, Body } from '../../../components/Typography/Typography';
 import './ResumenOptionCard.css';
 
 export interface ResumenOptionCardProps {
-    title: string;
-    description?: string;
-    to: string;
+    icon: ReactNode;
+    label: string;
+    href: string;
+    variant?: 'light' | 'dark';
 }
 
-export const ResumenOptionCard: React.FC<ResumenOptionCardProps> = ({ title, description, to }) => {
+export const ResumenOptionCard: React.FC<ResumenOptionCardProps> = ({
+    icon,
+    label,
+    href,
+    variant = 'light'
+}) => {
     const navigate = useNavigate();
 
+    const handleClick = () => {
+        if (href.startsWith('http')) {
+            window.location.href = href;
+        } else {
+            navigate(href);
+        }
+    };
+
     return (
-        <div className="resumen-option-card" onClick={() => navigate(to)}>
-            <Stack spacing="xs">
-                <Headline level={3}>{title}</Headline>
-                {description && <Body size="sm" color="secondary">{description}</Body>}
-            </Stack>
-            <div className="resumen-option-card__icon">&gt;</div>
-        </div>
+        <button
+            className={`resumen-option-card resumen-option-card--${variant}`}
+            onClick={handleClick}
+        >
+
+            <div className="resumen-option-card__icon">
+                {icon}
+            </div>
+            <div className="resumen-option-card__label">
+                {label}
+            </div>
+        </button>
     );
 };

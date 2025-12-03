@@ -1,7 +1,7 @@
 import React from 'react';
-import { Stack } from '../../../components/Layout';
-import { Button } from '../../../components/Button/Button';
 import { useNavigate } from 'react-router-dom';
+import { FormatCard } from '../../noticiasHub/components/FormatCard';
+import { Icons } from '../../../components/Icons';
 import './ResumenArticleFormatsList.css';
 
 export interface ResumenArticleFormatsListProps {
@@ -11,20 +11,23 @@ export interface ResumenArticleFormatsListProps {
 export const ResumenArticleFormatsList: React.FC<ResumenArticleFormatsListProps> = ({ basePath }) => {
     const navigate = useNavigate();
 
+    const options = [
+        { label: 'Nota Original', icon: <Icons.original size={48} stroke={1.5} />, path: 'original' },
+        { label: 'Resumen Ejecutivo', icon: <Icons.summary size={48} stroke={1.5} />, path: 'ejecutivo' },
+        { label: 'Resumen de Audio', icon: <Icons.podcast size={48} stroke={1.5} />, path: 'audio' },
+        { label: 'Presentación Guiada', icon: <Icons.guided size={48} stroke={1.5} />, path: 'guiada' },
+    ];
+
     return (
-        <Stack spacing="md">
-            <Button fullWidth variant="secondary" onClick={() => navigate(`${basePath}/original`)}>
-                Leer nota original
-            </Button>
-            <Button fullWidth variant="secondary" onClick={() => navigate(`${basePath}/ejecutivo`)}>
-                Resumen Ejecutivo
-            </Button>
-            <Button fullWidth variant="secondary" onClick={() => navigate(`${basePath}/audio`)}>
-                Resumen de Audio
-            </Button>
-            <Button fullWidth variant="secondary" onClick={() => navigate(`${basePath}/guiada`)}>
-                Presentación Guiada
-            </Button>
-        </Stack>
+        <div className="resumen-article-formats-list">
+            {options.map((option) => (
+                <FormatCard
+                    key={option.path}
+                    label={option.label}
+                    icon={option.icon}
+                    onClick={() => navigate(`${basePath}/${option.path}`)}
+                />
+            ))}
+        </div>
     );
 };

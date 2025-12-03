@@ -6,6 +6,7 @@ export interface NoticiasArticle {
     section?: string;    // optional (e.g. "Saltillo", "Dinero")
     summary?: string;
     content?: string;
+    audioUrl?: string;
 }
 
 export type ArticleFormat = "original" | "ejecutivo" | "audio" | "guiada";

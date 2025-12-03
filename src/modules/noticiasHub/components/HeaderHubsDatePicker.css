@@ -5,7 +5,7 @@
     border: none !important;
     border-radius: var(--radius-lg) !important;
     box-shadow: var(--shadow-lg) !important;
-    background-color: var(--color-surface) !important;
+    background-color: var(--bg-primary) !important;
     color: var(--color-text-primary) !important;
     padding: var(--spacing-md);
     overflow: hidden;
@@ -39,7 +39,7 @@
 }
 
 .magnus-datepicker .react-datepicker__day:hover {
-    background-color: var(--color-surface) !important;
+    background-color: var(--bg-secondary) !important;
     color: var(--color-primary) !important;
 }
 

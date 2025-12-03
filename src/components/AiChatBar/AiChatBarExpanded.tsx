@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Heading } from '../Typography/Typography';
+import { Heading, Display } from '../Typography/Typography';
 import './styles.css';
 
 interface AiChatBarExpandedProps {
@@ -26,7 +26,7 @@ export const AiChatBarExpanded: React.FC<AiChatBarExpandedProps> = ({ onClose })
         <div className="ai-chat-modal-overlay" onClick={onClose}>
             <div className="ai-chat-modal-content" onClick={e => e.stopPropagation()}>
                 <div className="ai-chat-header">
-                    <Heading level={3}>MAGNUS</Heading>
+                    <Display>MAGNUS</Display>
                     <button onClick={onClose} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '24px' }}>&times;</button>
                 </div>
 
@@ -39,7 +39,7 @@ export const AiChatBarExpanded: React.FC<AiChatBarExpandedProps> = ({ onClose })
                 </div>
 
                 <div className="ai-chat-footer">
-                    <div className="ai-chat-bar-collapsed" style={{ width: '100%', padding: '8px 16px' }}>
+                    <div className="ai-chat-bar-collapsed" style={{ width: '100%', cursor: 'default' }}>
                         <input
                             type="text"
                             value={input}
@@ -55,10 +55,12 @@ export const AiChatBarExpanded: React.FC<AiChatBarExpandedProps> = ({ onClose })
                                 color: 'var(--color-text-primary)'
                             }}
                         />
-                        <button onClick={handleSend} style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" />
-                            </svg>
+                        <button onClick={handleSend} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>
+                            <div className="ai-chat-bar-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                    <path d="M5 12h14M12 5l7 7-7 7" />
+                                </svg>
+                            </div>
                         </button>
                     </div>
                 </div>

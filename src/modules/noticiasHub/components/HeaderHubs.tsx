@@ -1,10 +1,13 @@
 import React, { forwardRef } from 'react';
-import { useNavigate } from 'react-router-dom';
-import DatePicker from 'react-datepicker';
+import { useNavigate, Link } from 'react-router-dom';
+import DatePicker, { registerLocale } from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
+import { es } from 'date-fns/locale/es';
 import { useScrolledHeader } from '../../../hooks/useScrolledHeader';
 import './HeaderHubs.css';
 import './HeaderHubsDatePicker.css';
+
+registerLocale('es', es);
 
 export interface HeaderHubsProps {
     variant?: "light" | "dark";
@@ -89,10 +92,12 @@ export const HeaderHubs: React.FC<HeaderHubsProps> = ({
             </button>
 
             {/* Center: Logo Block */}
-            <div className="header-hubs__logo-block">
-                <div className="header-hubs__logo">MAGNUS</div>
-                <div className="header-hubs__vanguardia">VANGUARDIA</div>
-            </div>
+            <Link to="/" style={{ textDecoration: 'none' }}>
+                <div className="header-hubs__logo-block">
+                    <div className="header-hubs__logo">MAGNUS</div>
+                    <div className="header-hubs__vanguardia">VANGUARDIA</div>
+                </div>
+            </Link>
 
             {/* Right: Filter Button (DatePicker) */}
             <div className="header-hubs__filter-wrapper">
@@ -103,6 +108,7 @@ export const HeaderHubs: React.FC<HeaderHubsProps> = ({
                     dateFormat="yyyy-MM-dd"
                     popperPlacement="bottom-end"
                     calendarClassName="magnus-datepicker"
+                    locale="es"
                 />
             </div>
         </header>

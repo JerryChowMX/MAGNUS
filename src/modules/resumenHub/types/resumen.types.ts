@@ -8,6 +8,7 @@ export interface ResumenArticle {
     summary?: string;
     content?: string;
     author?: string; // For opinion pieces
+    audioUrl?: string;
 }
 
 export interface ResumenPodcast {
@@ -17,6 +18,7 @@ export interface ResumenPodcast {
     audioUrl: string;
     imageUrl: string;
     description?: string;
+    date?: string;
 }
 
 export interface ResumenPhoto {

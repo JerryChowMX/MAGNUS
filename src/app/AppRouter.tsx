@@ -19,6 +19,7 @@ import { ResumenCartonesPage } from '../modules/resumenHub/pages/ResumenCartones
 import { ResumenJuegosRedirectPage } from '../modules/resumenHub/pages/ResumenJuegosRedirectPage';
 import { EpaperHubPage } from '../modules/epaper/pages/EpaperHubPage';
 import { EpaperEditionPage } from '../modules/epaper/pages/EpaperEditionPage';
+import { PerfilHubPage } from '../modules/perfilHub/pages/PerfilHubPage';
 
 const Articles = () => (
     <PageWrapper>
@@ -82,6 +83,9 @@ export const AppRouter = () => {
                 <Route path="/EPaper" element={<RedirectToToday />} />
                 <Route path="/EPaper/:date" element={<EpaperHubPage />} />
                 <Route path="/EPaper/:date/:editionNumber" element={<EpaperEditionPage />} />
+
+                {/* Perfil Hub Routes */}
+                <Route path={routes.perfilHub} element={<PerfilHubPage />} />
             </Routes>
         </BrowserRouter>
     );

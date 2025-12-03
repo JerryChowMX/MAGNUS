@@ -1,6 +1,7 @@
 import React from 'react';
 import { Stack } from '../../../components/Layout';
-import { Headline, Body, Caption } from '../../../components/Typography/Typography';
+import { Headline, Body } from '../../../components/Typography/Typography';
+import { AudioPlayer } from '../../../components/AudioPlayer/AudioPlayer';
 import type { ResumenPodcast } from '../types/resumen.types';
 import './ResumenPodcastPlayer.css';
 
@@ -13,13 +14,14 @@ export const ResumenPodcastPlayer: React.FC<ResumenPodcastPlayerProps> = ({ podc
         <div className="resumen-podcast-player">
             <img src={podcast.imageUrl} alt={podcast.title} className="resumen-podcast-player__image" />
             <div className="resumen-podcast-player__controls">
-                <Stack spacing="md" align="center">
-                    <Headline level={3}>{podcast.title}</Headline>
+                <Stack spacing="sm" align="center">
+                    <Headline level={3} className="resumen-podcast-player__title">{podcast.title}</Headline>
+                    {podcast.date && (
+                        <span className="resumen-podcast-player__date">{podcast.date}</span>
+                    )}
                     <Body>{podcast.description}</Body>
-                    <Caption>Duration: {podcast.duration}</Caption>
-                    <audio controls src={podcast.audioUrl} className="resumen-podcast-player__audio">
-                        Your browser does not support the audio element.
-                    </audio>
+                    <span className="resumen-podcast-player__duration">{podcast.duration}</span>
+                    <AudioPlayer src={podcast.audioUrl} />
                 </Stack>
             </div>
         </div>

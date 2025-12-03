@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { PageWrapper } from '../../../components/Layout/PageWrapper';
 import { Section, Stack } from '../../../components/Layout';
 import { Headline, Body } from '../../../components/Typography/Typography';
+import { AudioPlayer } from '../../../components/AudioPlayer/AudioPlayer';
 import { HeaderContent } from '../../noticiasHub/components/HeaderContent';
 import { resumenApi } from '../services/resumenApi';
 import type { ResumenArticle } from '../types/resumen.types';
@@ -36,7 +37,7 @@ export const ResumenOpinionArticleFormatPage: React.FC = () => {
             case 'ejecutivo':
                 return <Body>{article.summary || 'Resumen no disponible.'}</Body>;
             case 'audio':
-                return <Body>[Audio Player Placeholder]</Body>;
+                return <AudioPlayer src={article.audioUrl || 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'} />;
             case 'guiada':
                 return <Body>[Presentación Guiada Placeholder]</Body>;
             default:

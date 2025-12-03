@@ -24,7 +24,7 @@ export const HomeHubsPage: React.FC = () => {
             {/* 2. Welcome Block */}
             <div className="home-hubs__welcome">
                 <Heading level={3} className="home-hubs__greeting">
-                    Bienvenido de vuelta, <span style={{ fontWeight: 'bold' }}>Gerardo</span>
+                    Bienvenido de vuelta, <span className="home-hubs__username">Gerardo</span>
                 </Heading>
                 <Caption className="home-hubs__date">{displayDate}</Caption>
             </div>

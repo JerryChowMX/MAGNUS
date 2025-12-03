@@ -5,20 +5,14 @@ import { Section, Grid } from '../../../components/Layout';
 import { HeaderHubs } from '../../noticiasHub/components/HeaderHubs';
 import { ResumenOptionCard } from '../components/ResumenOptionCard';
 import { useResumenDate } from '../hooks/useResumenDate';
+import { Icons } from '../../../components/Icons';
 import './ResumenHubPage.css';
 
 export const ResumenHubPage: React.FC = () => {
     const navigate = useNavigate();
     const { currentDate, handleDateChange } = useResumenDate();
 
-    const options = [
-        { title: "Las 5 noticias del día", to: `/ResumenHub/${currentDate}/Las5DelDia` },
-        { title: "El podcast del día", to: `/ResumenHub/${currentDate}/ElPodcastDelDia` },
-        { title: "La opinión del día", to: `/ResumenHub/${currentDate}/LaOpinionDelDia` },
-        { title: "Las fotografías del día", to: `/ResumenHub/${currentDate}/LasFotosDelDia` },
-        { title: "Los cartones del día", to: `/ResumenHub/${currentDate}/LosCartonesDelDia` },
-        { title: "Los juegos del día", to: `/ResumenHub/${currentDate}/LosJuegosDelDia` },
-    ];
+
 
     return (
         <PageWrapper>
@@ -29,10 +23,40 @@ export const ResumenHubPage: React.FC = () => {
             />
 
             <Section padding="md">
-                <Grid columns={1} gap="md">
-                    {options.map((opt, idx) => (
-                        <ResumenOptionCard key={idx} title={opt.title} to={opt.to} />
-                    ))}
+
+                {/* ... (inside component) */}
+
+                <Grid columns={2} gap="md">
+                    <ResumenOptionCard
+                        label="Las 5 del día"
+                        href={`/ResumenHub/${currentDate}/Las5DelDia`}
+                        icon={<Icons.book size={48} stroke={1.5} />}
+                    />
+                    <ResumenOptionCard
+                        label="El podcast del día"
+                        href={`/ResumenHub/${currentDate}/ElPodcastDelDia`}
+                        icon={<Icons.podcast size={48} stroke={1.5} />}
+                    />
+                    <ResumenOptionCard
+                        label="La Opinión del día"
+                        href={`/ResumenHub/${currentDate}/LaOpinionDelDia`}
+                        icon={<Icons.opinion size={48} stroke={1.5} />}
+                    />
+                    <ResumenOptionCard
+                        label="Fotos del día"
+                        href={`/ResumenHub/${currentDate}/LasFotosDelDia`}
+                        icon={<Icons.photos size={48} stroke={1.5} />}
+                    />
+                    <ResumenOptionCard
+                        label="Cartones del día"
+                        href={`/ResumenHub/${currentDate}/LosCartonesDelDia`}
+                        icon={<Icons.cartoons size={48} stroke={1.5} />}
+                    />
+                    <ResumenOptionCard
+                        label="Juegos del día"
+                        href="https://vanguardia.com.mx/juegos"
+                        icon={<Icons.games size={48} stroke={1.5} />}
+                    />
                 </Grid>
             </Section>
         </PageWrapper>

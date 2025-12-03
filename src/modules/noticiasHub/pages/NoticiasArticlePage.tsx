@@ -2,9 +2,10 @@ import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { PageWrapper } from '../../../components/Layout/PageWrapper';
 import { Section, Stack } from '../../../components/Layout';
-import { Headline, Body } from '../../../components/Typography/Typography';
+import { Body, Display } from '../../../components/Typography/Typography';
 import { HeaderContent } from '../components/HeaderContent';
-import { ArticleFormatsList } from '../components/ArticleFormatsList';
+import { FormatSelectionGrid } from '../components/FormatSelectionGrid';
+import { AiChatBar } from '../../../components/AiChatBar';
 import { useNoticiasArticle } from '../hooks/useNoticiasArticle';
 import './NoticiasArticlePage.css';
 
@@ -30,13 +31,21 @@ export const NoticiasArticlePage: React.FC = () => {
             </Section>
 
             <Section padding="md">
-                <Stack spacing="lg">
-                    <Headline level={2}>{article.title}</Headline>
-                    {article.summary && <Body size="lg">{article.summary}</Body>}
+                <Stack spacing="lg" align="center">
+                    <Display align="center" className="noticias-article-title">{article.title}</Display>
 
-                    <ArticleFormatsList basePath={`/NoticiasHub/${date}/${slug}`} />
+                    <Body size="sm" color="secondary" align="center" className="noticias-article-instruction">
+                        Elige como quieres consumir esta noticia:
+                    </Body>
+
+                    <FormatSelectionGrid basePath={`/NoticiasHub/${date}/${slug}`} />
+
+                    {/* Spacer for AI Chat Bar */}
+                    <div style={{ height: '80px' }} />
                 </Stack>
             </Section>
+
+            <AiChatBar />
         </PageWrapper>
     );
 };

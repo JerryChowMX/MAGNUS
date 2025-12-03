@@ -22,4 +22,6 @@ export const routes = {
 
     epaperHub: (date: string) => `/EPaper/${date}`,
     epaperEdition: (date: string, editionNumber: string) => `/EPaper/${date}/${editionNumber}`,
+
+    perfilHub: '/PerfilHub',
 };

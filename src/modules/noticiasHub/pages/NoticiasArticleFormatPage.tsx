@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { PageWrapper } from '../../../components/Layout/PageWrapper';
 import { Section, Stack } from '../../../components/Layout';
 import { Headline, Body } from '../../../components/Typography/Typography';
+import { AudioPlayer } from '../../../components/AudioPlayer/AudioPlayer';
 import { HeaderContent } from '../components/HeaderContent';
 import { useNoticiasArticle } from '../hooks/useNoticiasArticle';
 import type { ArticleFormat } from '../types/noticias.types';
@@ -38,9 +39,7 @@ export const NoticiasArticleFormatPage: React.FC = () => {
                 return (
                     <Stack spacing="md">
                         <Headline level={3}>Resumen de Audio</Headline>
-                        <div className="audio-player-placeholder">
-                            [Audio Player Placeholder]
-                        </div>
+                        <AudioPlayer src={article.audioUrl || 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'} />
                     </Stack>
                 );
             case 'guiada':

@@ -1,41 +1,42 @@
 .header-content {
-    position: sticky;
+    position: fixed;
+    /* Fixed as requested */
     top: 0;
-    z-index: 100;
+    left: 0;
+    z-index: 1000;
     width: 100%;
-    height: 120px;
-    /* Base height */
+    height: 80px;
+    /* Standard height */
     display: flex;
-    align-items: flex-end;
-    /* Push controls to bottom */
+    align-items: center;
     justify-content: space-between;
-    padding: 0 var(--spacing-md) 16px var(--spacing-md);
-    /* Add bottom padding */
+    padding: 0 var(--spacing-md);
     transition: all 0.3s ease;
 
-    /* Glassmorphism Base */
-    backdrop-filter: blur(var(--glass-blur-header));
-    -webkit-backdrop-filter: blur(var(--glass-blur-header));
-    box-shadow: var(--glass-shadow-header);
+    /* Glassmorphism Always On */
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    box-shadow: var(--glass-shadow);
 }
 
 /* Light Mode Variant */
 .header-content--light {
-    background: var(--glass-bg-header-light);
-    color: var(--color-text-primary);
+    background: var(--glass-bg);
+    /* Uses the light/dark token logic */
+    color: var(--text-primary);
 }
 
 /* Dark Mode Variant */
 .header-content--dark {
-    background: var(--glass-bg-header-dark);
+    background: rgba(0, 0, 0, 0.75);
+    /* Dark glass override */
     color: #FFFFFF;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* Scrolled State */
+/* Scrolled State - Optional extra styling */
 .header-content--scrolled {
-    height: 80px;
-    /* Shrink on scroll */
+    /* box-shadow: var(--shadow-2); */
 }
 
 /* Left: Back Button */
@@ -49,7 +50,6 @@
     padding: var(--spacing-xs);
     color: inherit;
     height: 40px;
-    /* Fixed height for alignment */
     width: 40px;
 }
 
@@ -64,7 +64,6 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    /* Perfect center */
     text-align: center;
     display: flex;
     flex-direction: column;
@@ -74,24 +73,26 @@
 
 .header-content__logo {
     font-family: var(--font-family-display);
-    font-weight: 900;
-    /* Black/ExtraBold */
-    font-size: 3.5rem;
-    /* Significantly larger */
-    line-height: 0.9;
-    letter-spacing: -0.04em;
+    /* Blinker */
+    font-weight: 800;
+    /* ExtraBold */
+    font-size: 2rem;
+    /* Adjusted for standard header */
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+    /* Black (or theme text) */
+    text-transform: uppercase;
 }
 
 .header-content__vanguardia {
     font-family: var(--font-family-display);
     font-weight: var(--font-weight-bold);
-    font-size: 0.75rem;
-    /* Slightly larger */
+    font-size: 0.6rem;
     color: var(--color-brand-orange);
     letter-spacing: 0.2em;
-    /* Wider spacing */
     text-transform: uppercase;
-    margin-top: 4px;
+    margin-top: 2px;
 }
 
 /* Right: Share Button */
@@ -106,7 +107,6 @@
     padding: var(--spacing-xs);
     color: inherit;
     height: 40px;
-    /* Match back button height for alignment */
     width: 40px;
 }
 

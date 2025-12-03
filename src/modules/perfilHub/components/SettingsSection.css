@@ -1,0 +1,27 @@
+.settings-section {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: var(--spacing-lg);
+}
+
+.settings-section__title {
+    padding: 0 var(--spacing-md) var(--spacing-xs);
+    font-family: 'Blinker', sans-serif;
+    font-weight: 600;
+    font-size: var(--font-size-sm);
+    color: var(--text-color-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.settings-section__content {
+    background-color: var(--surface-color);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    /* Optional: Add border if desired */
+    /* border: 1px solid var(--border-color); */
+}
+
+.settings-section__content>.settings-row:last-child {
+    border-bottom: none;
+}

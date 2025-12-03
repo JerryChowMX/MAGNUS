@@ -1,30 +1,28 @@
 import { useState, useEffect } from 'react';
 import { noticiasApi } from '../services/noticiasApi';
-import type { NoticiasArticle } from '../types/noticias.types';
+import type { NoticiasArticle } from '../../../types/noticias';
 
 export const useNoticiasArticle = (slug: string) => {
     const [article, setArticle] = useState<NoticiasArticle | undefined>(undefined);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<Error | null>(null);
+    const [isFallback, setIsFallback] = useState(false);
 
     useEffect(() => {
-        const fetchArticle = async () => {
+        const fetch = async () => {
             setIsLoading(true);
             try {
-                const data = await noticiasApi.getArticleBySlug(slug);
+                const { data, isFallback } = await noticiasApi.getArticleBySlug(slug);
                 setArticle(data);
-                setError(null);
+                setIsFallback(isFallback);
             } catch (err) {
-                setError(err instanceof Error ? err : new Error('Failed to fetch article'));
+                setError(err instanceof Error ? err : new Error('Failed to fetch'));
             } finally {
                 setIsLoading(false);
             }
         };
-
-        if (slug) {
-            fetchArticle();
-        }
+        fetch();
     }, [slug]);
 
-    return { article, isLoading, error };
+    return { article, isLoading, error, isFallback };
 };

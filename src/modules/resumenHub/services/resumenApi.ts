@@ -1,65 +1,53 @@
-import type { ResumenArticle, ResumenPodcast, ResumenPhoto, ResumenCartoon } from '../types/resumen.types';
-
-const MOCK_LAS_5: ResumenArticle[] = [
-    { id: 'las5-1', title: 'Noticia Principal del Día', imageUrl: 'https://picsum.photos/seed/las5-1/800/600', banner: 'Principal', summary: 'Resumen de la noticia principal...' },
-    { id: 'las5-2', title: 'Editorial Importante', imageUrl: 'https://picsum.photos/seed/las5-2/800/600', banner: 'Editorial', summary: 'Resumen de la editorial...' },
-    { id: 'las5-3', title: 'Suceso en Saltillo', imageUrl: 'https://picsum.photos/seed/las5-3/800/600', banner: 'Saltillo', summary: 'Resumen de Saltillo...' },
-    { id: 'las5-4', title: 'Noticia de Finanzas', imageUrl: 'https://picsum.photos/seed/las5-4/800/600', banner: 'Dinero', summary: 'Resumen de finanzas...' },
-    { id: 'las5-5', title: 'Reportaje Especial', imageUrl: 'https://picsum.photos/seed/las5-5/800/600', banner: 'Especial', summary: 'Resumen especial...' },
-];
-
-const MOCK_OPINION: ResumenArticle[] = [
-    { id: 'op-1', title: 'La Columna del Director', imageUrl: 'https://picsum.photos/seed/op-1/800/600', banner: 'Columna', author: 'Armando Fuentes Aguirre', summary: 'Resumen de la columna...' },
-    { id: 'op-2', title: 'Opinión Invitada', imageUrl: 'https://picsum.photos/seed/op-2/800/600', banner: 'Opinión', author: 'Sergio Sarmiento', summary: 'Resumen de la opinión...' },
-    { id: 'op-3', title: 'Editorial del Día', imageUrl: 'https://picsum.photos/seed/op-3/800/600', banner: 'Editorial', author: 'Vanguardia', summary: 'Resumen de la editorial...' },
-];
-
-const MOCK_PODCAST: ResumenPodcast = {
-    id: 'pod-1',
-    title: 'El Podcast de Vanguardia',
-    duration: '15:30',
-    audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3', // Placeholder
-    imageUrl: 'https://picsum.photos/seed/podcast/800/800',
-    date: 'Miércoles, 3 de diciembre de 2025'
-};
-
-const MOCK_PHOTOS: ResumenPhoto[] = Array.from({ length: 10 }).map((_, i) => ({
-    id: `photo-${i}`,
-    title: `Foto del día ${i + 1}`,
-    imageUrl: `https://picsum.photos/seed/photo-${i}/1200/800`,
-    photographer: 'Fotógrafo Vanguardia'
-}));
-
-const MOCK_CARTOONS: ResumenCartoon[] = Array.from({ length: 3 }).map((_, i) => ({
-    id: `cartoon-${i}`,
-    title: `Cartón Político ${i + 1}`,
-    imageUrl: `https://picsum.photos/seed/cartoon-${i}/800/800`,
-    artist: 'Monero'
-}));
+import { apiClient } from '../../../api/apiClient';
+import { withMockFallback } from '../../../api/mockFallback';
+import type { ResumenArticle, ResumenPodcast, ResumenPhoto, ResumenCartoon } from '../../../types/resumen';
+import { MOCK_PODCAST } from '../mocks/resumenPodcast.mock';
+import { MOCK_LAS_5, MOCK_OPINION } from '../mocks/resumenArticles.mock';
+import { MOCK_PHOTOS, MOCK_CARTOONS } from '../mocks/resumenMedia.mock';
 
 export const resumenApi = {
-    getLas5Articles: async (_date: string): Promise<ResumenArticle[]> => {
-        await new Promise(resolve => setTimeout(resolve, 500));
-        return MOCK_LAS_5;
+    getLas5Articles: async (date: string) => {
+        return withMockFallback<ResumenArticle[]>(
+            () => apiClient.get<ResumenArticle[]>(`/resumen/las-5?date=${date}`),
+            MOCK_LAS_5,
+            'resumen/las-5'
+        );
     },
-    getOpinionArticles: async (_date: string): Promise<ResumenArticle[]> => {
-        await new Promise(resolve => setTimeout(resolve, 500));
-        return MOCK_OPINION;
+    getOpinionArticles: async (date: string) => {
+        return withMockFallback<ResumenArticle[]>(
+            () => apiClient.get<ResumenArticle[]>(`/resumen/opinion?date=${date}`),
+            MOCK_OPINION,
+            'resumen/opinion'
+        );
     },
-    getPodcast: async (_date: string): Promise<ResumenPodcast> => {
-        await new Promise(resolve => setTimeout(resolve, 500));
-        return MOCK_PODCAST;
+    getPodcast: async (date: string) => {
+        return withMockFallback<ResumenPodcast>(
+            () => apiClient.get<ResumenPodcast>(`/resumen/podcast?date=${date}`),
+            MOCK_PODCAST,
+            'resumen/podcast'
+        );
     },
-    getPhotos: async (_date: string): Promise<ResumenPhoto[]> => {
-        await new Promise(resolve => setTimeout(resolve, 500));
-        return MOCK_PHOTOS;
+    getPhotos: async (date: string) => {
+        return withMockFallback<ResumenPhoto[]>(
+            () => apiClient.get<ResumenPhoto[]>(`/resumen/photos?date=${date}`),
+            MOCK_PHOTOS,
+            'resumen/photos'
+        );
     },
-    getCartoons: async (_date: string): Promise<ResumenCartoon[]> => {
-        await new Promise(resolve => setTimeout(resolve, 500));
-        return MOCK_CARTOONS;
+    getCartoons: async (date: string) => {
+        return withMockFallback<ResumenCartoon[]>(
+            () => apiClient.get<ResumenCartoon[]>(`/resumen/cartoons?date=${date}`),
+            MOCK_CARTOONS,
+            'resumen/cartoons'
+        );
     },
-    getArticleById: async (id: string): Promise<ResumenArticle | undefined> => {
-        await new Promise(resolve => setTimeout(resolve, 500));
-        return [...MOCK_LAS_5, ...MOCK_OPINION].find(a => a.id === id);
+    getArticleById: async (id: string) => {
+        // For now, we simulate fetching by ID from our mocks if the API fails
+        const mockArticle = [...MOCK_LAS_5, ...MOCK_OPINION].find(a => a.id === id);
+        return withMockFallback<ResumenArticle | undefined>(
+            () => apiClient.get<ResumenArticle>(`/resumen/articles/${id}`),
+            mockArticle,
+            `resumen/articles/${id}`
+        );
     }
 };

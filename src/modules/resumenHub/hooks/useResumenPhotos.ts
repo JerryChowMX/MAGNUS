@@ -1,18 +1,20 @@
 import { useState, useEffect } from 'react';
 import { resumenApi } from '../services/resumenApi';
-import type { ResumenPhoto } from '../types/resumen.types';
+import type { ResumenPhoto } from '../../../types/resumen';
 
 export const useResumenPhotos = (date: string) => {
     const [photos, setPhotos] = useState<ResumenPhoto[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<Error | null>(null);
+    const [isFallback, setIsFallback] = useState(false);
 
     useEffect(() => {
         const fetch = async () => {
             setIsLoading(true);
             try {
-                const data = await resumenApi.getPhotos(date);
+                const { data, isFallback } = await resumenApi.getPhotos(date);
                 setPhotos(data);
+                setIsFallback(isFallback);
             } catch (err) {
                 setError(err instanceof Error ? err : new Error('Failed to fetch'));
             } finally {
@@ -22,5 +24,5 @@ export const useResumenPhotos = (date: string) => {
         fetch();
     }, [date]);
 
-    return { photos, isLoading, error };
+    return { photos, isLoading, error, isFallback };
 };

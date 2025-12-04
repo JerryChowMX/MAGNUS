@@ -9,7 +9,7 @@ This document analyzes the proposed plan to implement a consistent image lightbo
 The proposal is solid and addresses a key user experience requirement for media-heavy applications. A unified lightbox experience elevates the "premium" feel of the app (one of the core design aesthetics) and improves accessibility and usability.
 
 ### Strengths of the Plan
-*   **Scope is clear**: Covers all key areas (Resumen, Las 5, Opinión).
+*   **Scope is clear**: Covers all key areas (Resumen, Las 5, Opinión, fotos del dia).
 *   **Behavior is standard**: Users expect pinch-to-zoom and tap-to-close.
 *   **Mobile-First approach**: Critical for this feature, as gestures are primary on mobile.
 *   **Accessibility**: Explicit mention of focus traps and keyboard navigation is excellent.

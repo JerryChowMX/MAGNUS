@@ -5,6 +5,7 @@ import { Section, Stack } from '../../../components/Layout';
 import { Headline, Body, Caption } from '../../../components/Typography/Typography';
 import { HeaderContent } from '../../noticiasHub/components/HeaderContent';
 import { ResumenArticleFormatsList } from '../components/ResumenArticleFormatsList';
+import { ZoomableImage } from '../../../components/Media/ZoomableImage';
 import { resumenApi } from '../services/resumenApi';
 import type { ResumenArticle } from '../types/resumen.types';
 import './ResumenOpinionArticlePage.css';
@@ -19,7 +20,7 @@ export const ResumenOpinionArticlePage: React.FC = () => {
         const fetch = async () => {
             if (slug) {
                 setLoading(true);
-                const data = await resumenApi.getArticleById(slug);
+                const { data } = await resumenApi.getArticleById(slug);
                 setArticle(data);
                 setLoading(false);
             }
@@ -39,7 +40,12 @@ export const ResumenOpinionArticlePage: React.FC = () => {
 
             <Section padding="none">
                 <div className="resumen-article-hero">
-                    <img src={article.imageUrl} alt={article.title} className="resumen-article-image" />
+                    <ZoomableImage
+                        src={article.imageUrl}
+                        alt={article.title}
+                        className="resumen-article-image"
+                        caption={article.author ? `Por ${article.author}` : article.title}
+                    />
                 </div>
             </Section>
 

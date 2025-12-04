@@ -14,7 +14,6 @@ export const MembershipCard: React.FC<MembershipCardProps> = ({
     planName,
     renewalDate,
     benefits,
-    onViewBenefits,
     onManage
 }) => {
     return (

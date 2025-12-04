@@ -28,6 +28,8 @@ import {
     IconBrandApple,
     IconEye,
     IconEyeOff,
+    IconX,
+    IconPencil,
 } from '@tabler/icons-react';
 
 export const Icons = {
@@ -60,4 +62,6 @@ export const Icons = {
     apple: IconBrandApple,
     eye: IconEye,
     eyeOff: IconEyeOff,
+    x: IconX,
+    edit: IconPencil,
 };

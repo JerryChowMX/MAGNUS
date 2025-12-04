@@ -5,6 +5,7 @@ import { Section, Stack } from '../../../components/Layout';
 import { Display, Body } from '../../../components/Typography/Typography';
 import { HeaderContent } from '../../noticiasHub/components/HeaderContent';
 import { ResumenArticleFormatsList } from '../components/ResumenArticleFormatsList';
+import { ZoomableImage } from '../../../components/Media/ZoomableImage';
 import { AiChatBar } from '../../../components/AiChatBar';
 import { resumenApi } from '../services/resumenApi';
 import type { ResumenArticle } from '../types/resumen.types';
@@ -20,7 +21,7 @@ export const ResumenLas5ArticlePage: React.FC = () => {
         const fetch = async () => {
             if (slug) {
                 setLoading(true);
-                const data = await resumenApi.getArticleById(slug);
+                const { data } = await resumenApi.getArticleById(slug);
                 setArticle(data);
                 setLoading(false);
             }
@@ -40,7 +41,12 @@ export const ResumenLas5ArticlePage: React.FC = () => {
 
             <Section padding="none">
                 <div className="resumen-article-hero">
-                    <img src={article.imageUrl} alt={article.title} className="resumen-article-image" />
+                    <ZoomableImage
+                        src={article.imageUrl}
+                        alt={article.title}
+                        className="resumen-article-image"
+                        caption={article.title} // Using title as caption for now
+                    />
                 </div>
             </Section>
 

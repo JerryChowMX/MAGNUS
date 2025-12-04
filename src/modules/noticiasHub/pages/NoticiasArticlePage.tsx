@@ -5,6 +5,7 @@ import { Section, Stack } from '../../../components/Layout';
 import { Body, Display } from '../../../components/Typography/Typography';
 import { HeaderContent } from '../components/HeaderContent';
 import { FormatSelectionGrid } from '../components/FormatSelectionGrid';
+import { ZoomableImage } from '../../../components/Media/ZoomableImage';
 import { AiChatBar } from '../../../components/AiChatBar';
 import { useNoticiasArticle } from '../hooks/useNoticiasArticle';
 import './NoticiasArticlePage.css';
@@ -26,7 +27,12 @@ export const NoticiasArticlePage: React.FC = () => {
 
             <Section padding="none">
                 <div className="noticias-article-hero">
-                    <img src={article.imageUrl} alt={article.title} className="noticias-article-image" />
+                    <ZoomableImage
+                        src={article.imageUrl}
+                        alt={article.title}
+                        className="noticias-article-image"
+                        caption={article.title}
+                    />
                 </div>
             </Section>
 

@@ -20,6 +20,8 @@ import { ResumenJuegosRedirectPage } from '../modules/resumenHub/pages/ResumenJu
 import { EpaperHubPage } from '../modules/epaper/pages/EpaperHubPage';
 import { EpaperEditionPage } from '../modules/epaper/pages/EpaperEditionPage';
 import { AuthProvider } from '../context/AuthContext';
+import { LightboxProvider } from '../context/LightboxContext';
+import { LightboxOverlay } from '../components/Media/LightboxOverlay';
 import { LoginPage } from '../modules/auth/pages/LoginPage';
 import { ProtectedRoute } from '../components/Auth/ProtectedRoute';
 import { PerfilHubPage } from '../modules/perfilHub/pages/PerfilHubPage';
@@ -55,50 +57,53 @@ export const AppRouter = () => {
     return (
         <BrowserRouter>
             <AuthProvider>
-                <Routes>
-                    <Route path={routes.home} element={<HomeHubsPage />} />
-                    <Route path={routes.articleList} element={<Articles />} />
-                    <Route path="/articles/:slug" element={<ArticleDetail />} />
-                    <Route path="/login" element={<LoginPage />} />
+                <LightboxProvider>
+                    <Routes>
+                        <Route path={routes.home} element={<HomeHubsPage />} />
+                        <Route path={routes.articleList} element={<Articles />} />
+                        <Route path="/articles/:slug" element={<ArticleDetail />} />
+                        <Route path="/login" element={<LoginPage />} />
 
-                    {/* Noticias Hub Routes */}
-                    <Route path="/NoticiasHub" element={<RedirectToToday />} />
-                    <Route path="/NoticiasHub/:date" element={<NoticiasHubPage />} />
-                    <Route path="/NoticiasHub/:date/:slug" element={<NoticiasArticlePage />} />
-                    <Route path="/NoticiasHub/:date/:slug/:format" element={<NoticiasArticleFormatPage />} />
+                        {/* Noticias Hub Routes */}
+                        <Route path="/NoticiasHub" element={<RedirectToToday />} />
+                        <Route path="/NoticiasHub/:date" element={<NoticiasHubPage />} />
+                        <Route path="/NoticiasHub/:date/:slug" element={<NoticiasArticlePage />} />
+                        <Route path="/NoticiasHub/:date/:slug/:format" element={<NoticiasArticleFormatPage />} />
 
-                    {/* Resumen Hub Routes */}
-                    <Route path="/ResumenHub" element={<RedirectToToday />} />
-                    <Route path="/ResumenHub/:date" element={<ResumenHubPage />} />
+                        {/* Resumen Hub Routes */}
+                        <Route path="/ResumenHub" element={<RedirectToToday />} />
+                        <Route path="/ResumenHub/:date" element={<ResumenHubPage />} />
 
-                    <Route path="/ResumenHub/:date/Las5DelDia" element={<ResumenLas5Page />} />
-                    <Route path="/ResumenHub/:date/Las5DelDia/:slug" element={<ResumenLas5ArticlePage />} />
-                    <Route path="/ResumenHub/:date/Las5DelDia/:slug/:format" element={<ResumenLas5ArticleFormatPage />} />
+                        <Route path="/ResumenHub/:date/Las5DelDia" element={<ResumenLas5Page />} />
+                        <Route path="/ResumenHub/:date/Las5DelDia/:slug" element={<ResumenLas5ArticlePage />} />
+                        <Route path="/ResumenHub/:date/Las5DelDia/:slug/:format" element={<ResumenLas5ArticleFormatPage />} />
 
-                    <Route path="/ResumenHub/:date/LaOpinionDelDia" element={<ResumenOpinionPage />} />
-                    <Route path="/ResumenHub/:date/LaOpinionDelDia/:slug" element={<ResumenOpinionArticlePage />} />
-                    <Route path="/ResumenHub/:date/LaOpinionDelDia/:slug/:format" element={<ResumenOpinionArticleFormatPage />} />
+                        <Route path="/ResumenHub/:date/LaOpinionDelDia" element={<ResumenOpinionPage />} />
+                        <Route path="/ResumenHub/:date/LaOpinionDelDia/:slug" element={<ResumenOpinionArticlePage />} />
+                        <Route path="/ResumenHub/:date/LaOpinionDelDia/:slug/:format" element={<ResumenOpinionArticleFormatPage />} />
 
-                    <Route path="/ResumenHub/:date/ElPodcastDelDia" element={<ResumenPodcastPage />} />
-                    <Route path="/ResumenHub/:date/LasFotosDelDia" element={<ResumenFotosPage />} />
-                    <Route path="/ResumenHub/:date/LosCartonesDelDia" element={<ResumenCartonesPage />} />
-                    <Route path="/ResumenHub/:date/LosJuegosDelDia" element={<ResumenJuegosRedirectPage />} />
+                        <Route path="/ResumenHub/:date/ElPodcastDelDia" element={<ResumenPodcastPage />} />
+                        <Route path="/ResumenHub/:date/LasFotosDelDia" element={<ResumenFotosPage />} />
+                        <Route path="/ResumenHub/:date/LosCartonesDelDia" element={<ResumenCartonesPage />} />
+                        <Route path="/ResumenHub/:date/LosJuegosDelDia" element={<ResumenJuegosRedirectPage />} />
 
-                    {/* EPaper Routes */}
-                    <Route path="/EPaper" element={<RedirectToToday />} />
-                    <Route path="/EPaper/:date" element={<EpaperHubPage />} />
-                    <Route path="/EPaper/:date/:editionNumber" element={<EpaperEditionPage />} />
+                        {/* EPaper Routes */}
+                        <Route path="/EPaper" element={<RedirectToToday />} />
+                        <Route path="/EPaper/:date" element={<EpaperHubPage />} />
+                        <Route path="/EPaper/:date/:editionNumber" element={<EpaperEditionPage />} />
 
-                    {/* Perfil Hub Routes */}
-                    <Route
-                        path={routes.perfilHub}
-                        element={
-                            <ProtectedRoute>
-                                <PerfilHubPage />
-                            </ProtectedRoute>
-                        }
-                    />
-                </Routes>
+                        {/* Perfil Hub Routes */}
+                        <Route
+                            path={routes.perfilHub}
+                            element={
+                                <ProtectedRoute>
+                                    <PerfilHubPage />
+                                </ProtectedRoute>
+                            }
+                        />
+                    </Routes>
+                    <LightboxOverlay />
+                </LightboxProvider>
             </AuthProvider>
         </BrowserRouter>
     );

@@ -19,8 +19,8 @@ export const ResumenOpinionArticleFormatPage: React.FC = () => {
         const fetch = async () => {
             if (slug) {
                 setLoading(true);
-                const data = await resumenApi.getArticleById(slug);
-                setArticle(data);
+                const response = await resumenApi.getArticleById(slug);
+                setArticle(response.data);
                 setLoading(false);
             }
         };

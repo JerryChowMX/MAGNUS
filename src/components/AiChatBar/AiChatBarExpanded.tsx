@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Heading, Display } from '../Typography/Typography';
+import { Display } from '../Typography/Typography';
 import './styles.css';
 
 interface AiChatBarExpandedProps {

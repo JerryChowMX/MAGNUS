@@ -12,7 +12,7 @@ export const LoginPage: React.FC = () => {
     return (
         <PageWrapper>
             <div className="login-page__container">
-                <Section padding="xl">
+                <Section padding="lg">
                     <Stack spacing="xl" align="center">
                         <AuthHeaderLogo />
 

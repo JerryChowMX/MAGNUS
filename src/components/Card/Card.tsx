@@ -15,10 +15,6 @@ export const Card: React.FC<CardProps> = ({
     padding = "md"
 }) => {
     const isInteractive = !!onClick;
-    const paddingClass = padding !== "none" ? `section--padding-${padding}` : ''; // Reusing section padding logic or define specific card padding
-    // Actually, let's use inline style or specific class for internal padding if needed, 
-    // but usually cards have their own padding logic. 
-    // Let's stick to a simple padding class map.
 
     const getPaddingClass = (p: string) => {
         switch (p) {

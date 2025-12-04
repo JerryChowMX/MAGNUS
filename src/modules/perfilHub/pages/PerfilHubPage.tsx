@@ -86,10 +86,12 @@ export const PerfilHubPage: React.FC = () => {
                                 user={{
                                     name: user.name,
                                     email: user.email,
-                                    avatarUrl: user.avatarUrl
+                                    avatarUrl: user.avatarUrl,
+                                    description: '' // TODO: Load from user profile
                                 }}
                                 onLogin={handleLogin}
                                 onEdit={handleEditProfile}
+                                onUpdateDescription={(desc) => console.log('Description updated:', desc)}
                             />
                         )}
 

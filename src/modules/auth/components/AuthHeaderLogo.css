@@ -6,28 +6,29 @@
 }
 
 .auth-header-logo__title {
-    font-family: 'Blinker', sans-serif;
+    font-family: var(--font-family-display);
     font-weight: 900;
     font-size: 64px;
-    /* Increased from 48px */
     letter-spacing: -1px;
-    color: black;
+    color: var(--text-primary);
     line-height: 1;
     margin: 0;
 }
 
 .auth-header-logo__subtitle {
-    font-family: 'Blinker', sans-serif;
+    font-family: var(--font-family-display);
     font-size: 12px;
     font-weight: 700;
     letter-spacing: 2px;
     margin-top: 4px;
+    display: flex;
+    gap: 4px;
 }
 
 .brand-orange {
-    color: #FF6A00;
+    color: var(--color-brand-orange);
 }
 
 .brand-gray {
-    color: #9CA3AF;
+    color: var(--text-secondary);
 }

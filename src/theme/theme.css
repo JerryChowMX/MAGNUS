@@ -8,7 +8,7 @@
   --text-secondary: #666666;
   --text-disabled: #999999;
 
-  --color-accent: #007AFF;
+  --color-accent: #0076ab;
   /* Default accent, can be overridden */
   --color-accent-teal: #00C7BE;
   --color-accent-violet: #5E5CE6;
@@ -42,6 +42,7 @@
   /* Floating buttons */
   --shadow-3: 0px 10px 32px rgba(0, 0, 0, 0.18);
   /* Modals */
+  --overlay-bg: rgba(0, 0, 0, 0.2);
 
   /* Typography */
   --font-family-display: "Blinker", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -76,6 +77,11 @@
   /* Light mode glass */
   --glass-border: rgba(255, 255, 255, 0.4);
   --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+
+  /* New Tokens for Dark Mode Fixes */
+  --text-on-accent: #FFFFFF;
+  --color-accent-hover: #005a85;
+  --border-subtle: rgba(0, 0, 0, 0.05);
 }
 
 [data-theme='dark'] {
@@ -87,7 +93,9 @@
   --bg-tertiary: #252525;
   /* Elevated surfaces */
   --bg-elevated: #303030;
+
   /* Modals, dropdowns */
+  --overlay-bg: rgba(0, 0, 0, 0.6);
 
   /* === TEXT - High Contrast === */
   --text-primary: #FFFFFF;
@@ -108,12 +116,13 @@
   /* Inner separators */
 
   /* === ACCENTS - Brighter for Dark Backgrounds === */
-  --color-accent: #0A84FF;
+  --color-accent: #4DA6DE;
   /* iOS blue for dark mode */
   --color-accent-teal: #64D2FF;
   /* Lighter teal */
   --color-accent-violet: #7D7AFF;
   /* Lighter violet */
+  --color-accent-hover: #4DA6DE;
 
   /* === BRAND === */
   --color-brand-orange: #FF8533;

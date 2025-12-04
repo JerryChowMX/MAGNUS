@@ -9,6 +9,7 @@ import { useNoticiasArticle } from '../hooks/useNoticiasArticle';
 import { FALLBACK_AUDIO_URL } from '../../../constants/media';
 import type { ArticleFormat } from '../types/noticias.types';
 import { useShare } from '../../../hooks/useShare';
+import { ShareModal } from '../../../components/ShareModal';
 
 import './NoticiasArticleFormatPage.css';
 
@@ -16,7 +17,7 @@ export const NoticiasArticleFormatPage: React.FC = () => {
     const { date, slug, format } = useParams<{ date: string; slug: string; format: string }>();
     const navigate = useNavigate();
     const { article, isLoading, error } = useNoticiasArticle(slug || '');
-    const { handleShare } = useShare();
+    const { handleShare, isModalOpen, closeModal, shareData } = useShare();
 
     if (isLoading) return <PageWrapper><Section padding="md"><Body>Loading...</Body></Section></PageWrapper>;
     if (error || !article) return <PageWrapper><Section padding="md"><Body>Article not found.</Body></Section></PageWrapper>;
@@ -71,6 +72,13 @@ export const NoticiasArticleFormatPage: React.FC = () => {
                     {renderContent()}
                 </Stack>
             </Section>
+
+            <ShareModal
+                isOpen={isModalOpen}
+                onClose={closeModal}
+                title={shareData?.title || ''}
+                url={shareData?.url}
+            />
         </PageWrapper>
     );
 };

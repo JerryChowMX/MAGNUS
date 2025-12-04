@@ -41,7 +41,7 @@
 --color-brand-orange: #FF6600; /* Vanguardia primary brand color */
 
 /* Accents */
---color-accent: #007AFF;      /* Default accent (iOS blue) */
+--color-accent: #0076ab;      /* Default accent (Updated Blue) */
 --color-accent-teal: #00C7BE; /* Teal variant */
 --color-accent-violet: #5E5CE6; /* Violet variant */
 ```
@@ -69,7 +69,7 @@
 --color-brand-orange: #FF8533; /* Lighter for dark backgrounds */
 
 /* Accents - Brighter for Dark */
---color-accent: #0A84FF;      /* iOS blue for dark mode */
+--color-accent: #4DA6DE;      /* Lighter blue for dark mode */
 --color-accent-teal: #64D2FF; /* Lighter teal */
 --color-accent-violet: #7D7AFF; /* Lighter violet */
 ```

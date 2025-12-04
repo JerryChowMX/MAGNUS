@@ -5,7 +5,7 @@ export const colors = {
   textPrimary: "#111111",
   textSecondary: "#666666",
   textDisabled: "#999999",
-  accent: "#007AFF",
+  accent: "#0076ab",
   accentTeal: "#00C7BE",
   accentViolet: "#5E5CE6",
 };

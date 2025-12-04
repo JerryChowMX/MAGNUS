@@ -10,6 +10,7 @@ import type { ArticleFormat } from '../../noticiasHub/types/noticias.types';
 import { RichTextRenderer } from '../../../components/RichTextRenderer/RichTextRenderer';
 import { FALLBACK_AUDIO_URL } from '../../../constants/media';
 import { useShare } from '../../../hooks/useShare';
+import { ShareModal } from '../../../components/ShareModal';
 
 export interface ResumenArticleFormatPageProps {
     backPath: string;
@@ -21,7 +22,7 @@ export const ResumenArticleFormatPage: React.FC<ResumenArticleFormatPageProps> =
     const { slug, format } = useParams<{ slug: string; format: string }>();
     const navigate = useNavigate();
     const { article, loading, error } = useResumenArticle(slug);
-    const { handleShare } = useShare();
+    const { handleShare, isModalOpen, closeModal, shareData } = useShare();
 
     if (loading) {
         return (
@@ -88,6 +89,13 @@ export const ResumenArticleFormatPage: React.FC<ResumenArticleFormatPageProps> =
                     {renderContent()}
                 </Stack>
             </Section>
+
+            <ShareModal
+                isOpen={isModalOpen}
+                onClose={closeModal}
+                title={shareData?.title || ''}
+                url={shareData?.url}
+            />
         </PageWrapper>
     );
 };

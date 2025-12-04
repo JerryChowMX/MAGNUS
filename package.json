@@ -14,6 +14,7 @@
     "@tabler/icons-react": "^3.35.0",
     "@types/react-datepicker": "^6.2.0",
     "lucide-react": "^0.555.0",
+    "posthog-js": "^1.301.2",
     "react": "^19.2.0",
     "react-datepicker": "^8.10.0",
     "react-dom": "^19.2.0",

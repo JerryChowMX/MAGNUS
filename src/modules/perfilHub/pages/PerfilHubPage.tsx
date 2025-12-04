@@ -16,6 +16,7 @@ import { useAuth } from '../../../hooks/useAuth';
 import { Body } from '../../../components/Typography/Typography';
 import { useUserPreferences } from '../../../context/ThemeContext';
 import { SimulationBanner } from '../../../components/Alerts/SimulationBanner';
+import { getAnalyticsConsent, setAnalyticsConsent } from '../../../lib/analytics';
 import './PerfilHubPage.css';
 
 export const PerfilHubPage: React.FC = () => {
@@ -23,6 +24,7 @@ export const PerfilHubPage: React.FC = () => {
     const { user, logout } = useAuth();
     const { settings, updateSettings, isLoading, error, isFallback } = useProfile();
     const { theme, toggleTheme, fontSize, setFontSize } = useUserPreferences();
+    const [analyticsEnabled, setAnalyticsEnabled] = React.useState(getAnalyticsConsent());
 
     const handleLogin = (): void => {
         navigate('/login');
@@ -96,7 +98,9 @@ export const PerfilHubPage: React.FC = () => {
                                     "Acceso ilimitado a contenido",
                                     "Lectura sin publicidad",
                                     "E-Paper incluido",
-                                    "Acceso a funciones MAGNUS AI"
+                                    "Acceso a funciones MAGNUS AI",
+                                    "Acceso a descuentos exclusivos",
+                                    "Acceso a eventos exclusivos"
                                 ]}
                                 onViewBenefits={() => window.open('https://Membresiavanguardia.com', '_blank')}
                                 onManage={() => console.log('Administrar')}
@@ -152,18 +156,15 @@ export const PerfilHubPage: React.FC = () => {
                                         onChange={(val) => setFontSize(val as 'small' | 'medium' | 'large')}
                                     />
                                 </div>
+
                                 <div className="perfil-hub-page__preferences-row">
-                                    <span className="perfil-hub-page__preferences-label">Auto-abrir resumen ejecutivo</span>
+                                    <span className="perfil-hub-page__preferences-label">Permitir analíticas anónimas</span>
                                     <ToggleSwitch
-                                        checked={settings.autoOpenSummary}
-                                        onChange={(checked) => updateSettings({ autoOpenSummary: checked })}
-                                    />
-                                </div>
-                                <div className="perfil-hub-page__preferences-row">
-                                    <span className="perfil-hub-page__preferences-label">Guardar artículos automáticamente</span>
-                                    <ToggleSwitch
-                                        checked={settings.autoSave}
-                                        onChange={(checked) => updateSettings({ autoSave: checked })}
+                                        checked={analyticsEnabled}
+                                        onChange={(checked) => {
+                                            setAnalyticsEnabled(checked);
+                                            setAnalyticsConsent(checked);
+                                        }}
                                     />
                                 </div>
                             </SettingsSection>
@@ -181,7 +182,7 @@ export const PerfilHubPage: React.FC = () => {
                 </Section>
             </div>
 
-            <AiChatBar />
+            <AiChatBar context="global" />
         </PageWrapper>
     );
 };

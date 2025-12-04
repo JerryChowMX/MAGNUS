@@ -1,33 +1,24 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Display } from '../Typography/Typography';
+import { useAiChat } from '../../hooks/useAiChat';
+import type { AiChatUsedProps } from '../../lib/analytics';
 import './styles.css';
+import './AiChatBarExpanded.css';
 
 interface AiChatBarExpandedProps {
     onClose: () => void;
+    context?: AiChatUsedProps['context'];
 }
 
-export const AiChatBarExpanded: React.FC<AiChatBarExpandedProps> = ({ onClose }) => {
-    const [input, setInput] = useState('');
-    const [messages, setMessages] = useState<{ text: string; sender: 'user' | 'ai' }[]>([
-        { text: 'Hola, soy Magnus. ¿En qué puedo ayudarte hoy?', sender: 'ai' }
-    ]);
-
-    const handleSend = () => {
-        if (!input.trim()) return;
-        setMessages([...messages, { text: input, sender: 'user' }]);
-        setInput('');
-        // Mock AI response
-        setTimeout(() => {
-            setMessages(prev => [...prev, { text: 'Esta es una respuesta simulada de Magnus AI.', sender: 'ai' }]);
-        }, 1000);
-    };
+export const AiChatBarExpanded: React.FC<AiChatBarExpandedProps> = ({ onClose, context }) => {
+    const { input, setInput, messages, sendMessage, isTyping } = useAiChat(context);
 
     return (
         <div className="ai-chat-modal-overlay" onClick={onClose}>
             <div className="ai-chat-modal-content" onClick={e => e.stopPropagation()}>
                 <div className="ai-chat-header">
                     <Display>MAGNUS</Display>
-                    <button onClick={onClose} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '24px' }}>&times;</button>
+                    <button onClick={onClose} className="ai-chat-modal-close">&times;</button>
                 </div>
 
                 <div className="ai-chat-body">
@@ -36,28 +27,26 @@ export const AiChatBarExpanded: React.FC<AiChatBarExpandedProps> = ({ onClose })
                             {msg.text}
                         </div>
                     ))}
+                    {isTyping && (
+                        <div className="message-bubble message-ai">
+                            ...
+                        </div>
+                    )}
                 </div>
 
                 <div className="ai-chat-footer">
-                    <div className="ai-chat-bar-collapsed" style={{ width: '100%', cursor: 'default' }}>
+                    <div className="ai-chat-bar-collapsed ai-chat-input-wrapper">
                         <input
                             type="text"
                             value={input}
                             onChange={e => setInput(e.target.value)}
-                            onKeyDown={e => e.key === 'Enter' && handleSend()}
+                            onKeyDown={e => e.key === 'Enter' && sendMessage()}
                             placeholder="Escribe tu pregunta..."
-                            style={{
-                                background: 'transparent',
-                                border: 'none',
-                                outline: 'none',
-                                width: '100%',
-                                fontSize: '16px',
-                                color: 'var(--color-text-primary)'
-                            }}
+                            className="ai-chat-input"
                         />
-                        <button onClick={handleSend} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>
+                        <button onClick={sendMessage} className="ai-chat-send-button">
                             <div className="ai-chat-bar-icon">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                                     <path d="M5 12h14M12 5l7 7-7 7" />
                                 </svg>
                             </div>

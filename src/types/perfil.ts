@@ -10,7 +10,6 @@ export interface UserProfile {
 export interface AppSettings {
     theme: "light" | "dark" | "system";
     fontSize: "small" | "medium" | "large";
-    autoSave: boolean;
-    autoOpenSummary: boolean;
+
     notifications: boolean;
 }

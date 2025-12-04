@@ -9,13 +9,21 @@ import { ZoomableImage } from '../../../components/Media/ZoomableImage';
 import { AiChatBar } from '../../../components/AiChatBar';
 import { useNoticiasArticle } from '../hooks/useNoticiasArticle';
 import { useShare } from '../../../hooks/useShare';
+import { ShareModal } from '../../../components/ShareModal';
+import { trackArticleView } from '../../../lib/analytics';
 import './NoticiasArticlePage.css';
 
 export const NoticiasArticlePage: React.FC = () => {
     const { date, slug } = useParams<{ date: string; slug: string }>();
     const navigate = useNavigate();
     const { article, isLoading, error } = useNoticiasArticle(slug || '');
-    const { handleShare } = useShare();
+    const { handleShare, isModalOpen, closeModal, shareData } = useShare();
+
+    React.useEffect(() => {
+        if (article) {
+            trackArticleView(article.id, 'noticias', undefined, 'home');
+        }
+    }, [article]);
 
     if (isLoading) return <PageWrapper><Section padding="md"><Body>Loading...</Body></Section></PageWrapper>;
     if (error || !article) return <PageWrapper><Section padding="md"><Body>Article not found.</Body></Section></PageWrapper>;
@@ -53,7 +61,14 @@ export const NoticiasArticlePage: React.FC = () => {
                 </Stack>
             </Section>
 
-            <AiChatBar />
+            <AiChatBar context="noticias" />
+
+            <ShareModal
+                isOpen={isModalOpen}
+                onClose={closeModal}
+                title={shareData?.title || ''}
+                url={shareData?.url}
+            />
         </PageWrapper>
     );
 };

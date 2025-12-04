@@ -12,8 +12,7 @@ export const MOCK_PROFILE: { profile: UserProfile; settings: AppSettings } = {
     settings: {
         theme: 'system',
         fontSize: 'medium',
-        autoSave: true,
-        autoOpenSummary: false,
+
         notifications: true
     }
 };

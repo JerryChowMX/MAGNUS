@@ -8,12 +8,13 @@ import { ResumenPodcastPlayer } from '../components/ResumenPodcastPlayer';
 import { useResumenDate } from '../hooks/useResumenDate';
 import { useResumenPodcast } from '../hooks/useResumenPodcast';
 import { useShare } from '../../../hooks/useShare';
+import { ShareModal } from '../../../components/ShareModal';
 
 export const ResumenPodcastPage: React.FC = () => {
     const navigate = useNavigate();
     const { currentDate } = useResumenDate();
     const { podcast, isLoading, error } = useResumenPodcast(currentDate);
-    const { handleShare } = useShare();
+    const { handleShare, isModalOpen, closeModal, shareData } = useShare();
 
     return (
         <PageWrapper>
@@ -30,6 +31,13 @@ export const ResumenPodcastPage: React.FC = () => {
                     <ResumenPodcastPlayer podcast={podcast} />
                 )}
             </Section>
+
+            <ShareModal
+                isOpen={isModalOpen}
+                onClose={closeModal}
+                title={shareData?.title || ''}
+                url={shareData?.url}
+            />
         </PageWrapper>
     );
 };

@@ -6,12 +6,20 @@ import { HeaderContent } from '../../noticiasHub/components/HeaderContent';
 import { PdfViewer } from '../components/PdfViewer';
 import { useShare } from '../../../hooks/useShare';
 import { AiChatBar } from '../../../components/AiChatBar';
+import { ShareModal } from '../../../components/ShareModal';
+import { trackEpaperOpened } from '../../../lib/analytics';
 import './EpaperEditionPage.css';
 
 export const EpaperEditionPage: React.FC = () => {
     const { date, editionNumber } = useParams<{ date: string; editionNumber: string }>();
     const navigate = useNavigate();
-    const { handleShare } = useShare();
+    const { handleShare, isModalOpen, closeModal, shareData } = useShare();
+
+    React.useEffect(() => {
+        if (date) {
+            trackEpaperOpened(date, 'home');
+        }
+    }, [date]);
 
     return (
         <PageWrapper>
@@ -24,7 +32,14 @@ export const EpaperEditionPage: React.FC = () => {
                 <PdfViewer url={`http://example.com/epaper/${date}/${editionNumber}.pdf`} />
             </Section>
 
-            <AiChatBar />
+            <AiChatBar context="epaper" />
+
+            <ShareModal
+                isOpen={isModalOpen}
+                onClose={closeModal}
+                title={shareData?.title || ''}
+                url={shareData?.url}
+            />
         </PageWrapper>
     );
 };

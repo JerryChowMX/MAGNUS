@@ -31,21 +31,23 @@
 }
 
 /* Dark Mode Variant */
+/* Dark Mode Variant */
 .header-hubs--dark {
-    background: rgba(0, 0, 0, 0.75);
-    color: #FFFFFF;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    background: var(--glass-bg);
+    color: var(--text-primary);
+    border-bottom: 1px solid var(--border-subtle);
 }
 
 .header-hubs--dark .header-hubs__date-label,
 .header-hubs--dark .header-hubs__filter-text {
-    color: #AAAAAA;
+    color: var(--text-tertiary);
 }
 
 /* Scrolled State */
-.header-hubs--scrolled {
-    /* box-shadow: var(--shadow-2); */
-}
+/* Scrolled State */
+/* .header-hubs--scrolled {
+    box-shadow: var(--shadow-2);
+} */
 
 /* Left: Back Button */
 .header-hubs__back {

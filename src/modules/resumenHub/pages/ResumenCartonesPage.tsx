@@ -8,12 +8,13 @@ import { ResumenCartoonStrip } from '../components/ResumenCartoonStrip';
 import { useResumenDate } from '../hooks/useResumenDate';
 import { useResumenCartones } from '../hooks/useResumenCartones';
 import { useShare } from '../../../hooks/useShare';
+import { ShareModal } from '../../../components/ShareModal';
 
 export const ResumenCartonesPage: React.FC = () => {
     const navigate = useNavigate();
     const { currentDate } = useResumenDate();
     const { cartoons, isLoading, error } = useResumenCartones(currentDate);
-    const { handleShare } = useShare();
+    const { handleShare, isModalOpen, closeModal, shareData } = useShare();
 
     return (
         <PageWrapper>
@@ -30,6 +31,13 @@ export const ResumenCartonesPage: React.FC = () => {
                     <ResumenCartoonStrip cartoons={cartoons} />
                 )}
             </Section>
+
+            <ShareModal
+                isOpen={isModalOpen}
+                onClose={closeModal}
+                title={shareData?.title || ''}
+                url={shareData?.url}
+            />
         </PageWrapper>
     );
 };

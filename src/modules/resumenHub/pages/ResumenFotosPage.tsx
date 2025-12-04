@@ -8,12 +8,13 @@ import { ResumenPhotoGallery } from '../components/ResumenPhotoGallery';
 import { useResumenDate } from '../hooks/useResumenDate';
 import { useResumenPhotos } from '../hooks/useResumenPhotos';
 import { useShare } from '../../../hooks/useShare';
+import { ShareModal } from '../../../components/ShareModal';
 
 export const ResumenFotosPage: React.FC = () => {
     const navigate = useNavigate();
     const { currentDate } = useResumenDate();
     const { photos, isLoading, error } = useResumenPhotos(currentDate);
-    const { handleShare } = useShare();
+    const { handleShare, isModalOpen, closeModal, shareData } = useShare();
 
     return (
         <PageWrapper>
@@ -30,6 +31,13 @@ export const ResumenFotosPage: React.FC = () => {
                     <ResumenPhotoGallery photos={photos} />
                 )}
             </Section>
+
+            <ShareModal
+                isOpen={isModalOpen}
+                onClose={closeModal}
+                title={shareData?.title || ''}
+                url={shareData?.url}
+            />
         </PageWrapper>
     );
 };

@@ -9,6 +9,8 @@ import { ZoomableImage } from '../../../components/Media/ZoomableImage';
 import { AiChatBar } from '../../../components/AiChatBar';
 import { useResumenArticle } from '../hooks/useResumenArticle';
 import { useShare } from '../../../hooks/useShare';
+import { ShareModal } from '../../../components/ShareModal';
+import { trackArticleView } from '../../../lib/analytics';
 import './ResumenArticlePage.css';
 
 export interface ResumenArticlePageProps {
@@ -23,7 +25,13 @@ export const ResumenArticlePage: React.FC<ResumenArticlePageProps> = ({
     const { slug } = useParams<{ date: string; slug: string }>();
     const navigate = useNavigate();
     const { article, loading, error } = useResumenArticle(slug);
-    const { handleShare } = useShare();
+    const { handleShare, isModalOpen, closeModal, shareData } = useShare();
+
+    React.useEffect(() => {
+        if (article) {
+            trackArticleView(article.id, 'resumen', undefined, articleType);
+        }
+    }, [article, articleType]);
 
     if (loading) {
         return (
@@ -100,14 +108,21 @@ export const ResumenArticlePage: React.FC<ResumenArticlePageProps> = ({
                         </Body>
                     )}
 
-                    <ResumenArticleFormatsList basePath={`${backPath}/${slug}`} />
+                    <ResumenArticleFormatsList basePath={`${backPath}/${slug}`} articleId={article.id} />
 
                     {/* Spacer for AI Chat Bar */}
                     {isLas5 && <div style={{ height: '80px' }} />}
                 </Stack>
             </Section>
 
-            {isLas5 && <AiChatBar />}
+            {isLas5 && <AiChatBar context="resumen" />}
+
+            <ShareModal
+                isOpen={isModalOpen}
+                onClose={closeModal}
+                title={shareData?.title || ''}
+                url={shareData?.url}
+            />
         </PageWrapper>
     );
 };

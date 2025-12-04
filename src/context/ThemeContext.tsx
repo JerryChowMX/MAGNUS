@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useEffect, useLayoutEffect, useState } from 'react';
+import { track } from '../lib/analytics';
 
 type Theme = 'light' | 'dark';
 export type FontSizePreference = 'small' | 'medium' | 'large';
@@ -68,15 +69,21 @@ export const UserPreferencesProvider: React.FC<{ children: React.ReactNode }> = 
     }, []);
 
     const toggleTheme = () => {
-        setThemeState((prev) => (prev === 'light' ? 'dark' : 'light'));
+        setThemeState((prev) => {
+            const newTheme = prev === 'light' ? 'dark' : 'light';
+            track({ name: 'theme_changed', properties: { new_theme: newTheme } });
+            return newTheme;
+        });
     };
 
     const setTheme = (newTheme: Theme) => {
         setThemeState(newTheme);
+        track({ name: 'theme_changed', properties: { new_theme: newTheme } });
     };
 
     const setFontSize = (size: FontSizePreference) => {
         setFontSizeState(size);
+        track({ name: 'font_size_changed', properties: { new_font_size: size } });
     };
 
     return (

@@ -55,3 +55,19 @@
     color: #111111;
     line-height: 1.2;
 }
+
+.resumen-option-card__ribbon {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background-color: var(--color-brand-orange, #FF6600);
+    color: #FFFFFF;
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 4px 8px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    z-index: 10;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}

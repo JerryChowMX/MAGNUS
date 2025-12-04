@@ -36,6 +36,7 @@ export const ResumenHubPage: React.FC = () => {
                         label="El podcast del día"
                         href={`/ResumenHub/${currentDate}/ElPodcastDelDia`}
                         icon={<Icons.podcast size={48} stroke={1.5} />}
+                        recommended={true}
                     />
                     <ResumenOptionCard
                         label="La Opinión del día"

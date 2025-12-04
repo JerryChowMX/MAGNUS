@@ -33,7 +33,6 @@ export const ResumenLas5Page: React.FC = () => {
                                 key={article.id}
                                 title={article.title}
                                 imageUrl={article.imageUrl}
-                                banner={article.banner}
                                 onClick={() => navigate(`/ResumenHub/${currentDate}/Las5DelDia/${article.id}`)}
                             />
                         ))}

@@ -1,10 +1,7 @@
-export type ResumenBannerType = "Principal" | "Editorial" | "Saltillo" | "Dinero" | "Especial" | "Opinión" | "Columna";
-
 export interface ResumenArticle {
     id: string;
     title: string;
     imageUrl: string;
-    banner: ResumenBannerType;
     summary?: string;
     content?: string;
     author?: string; // For opinion pieces

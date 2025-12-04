@@ -7,13 +7,15 @@ export interface ResumenOptionCardProps {
     label: string;
     href: string;
     variant?: 'light' | 'dark';
+    recommended?: boolean;
 }
 
 export const ResumenOptionCard: React.FC<ResumenOptionCardProps> = ({
     icon,
     label,
     href,
-    variant = 'light'
+    variant = 'light',
+    recommended = false
 }) => {
     const navigate = useNavigate();
 
@@ -30,7 +32,11 @@ export const ResumenOptionCard: React.FC<ResumenOptionCardProps> = ({
             className={`resumen-option-card resumen-option-card--${variant}`}
             onClick={handleClick}
         >
-
+            {recommended && (
+                <div className="resumen-option-card__ribbon">
+                    RECOMENDADO
+                </div>
+            )}
             <div className="resumen-option-card__icon">
                 {icon}
             </div>

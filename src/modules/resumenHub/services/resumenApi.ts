@@ -5,7 +5,7 @@ import { MOCK_PODCAST } from '../mocks/resumenPodcast.mock';
 import { MOCK_LAS_5, MOCK_OPINION } from '../mocks/resumenArticles.mock';
 import { MOCK_PHOTOS, MOCK_CARTOONS } from '../mocks/resumenMedia.mock';
 import { getStrapiMedia } from '../../../utils/media';
-import type { StrapiData, StrapiMedia } from '../../../types/strapi';
+import type { StrapiData, StrapiMedia, StrapiCollectionResponse, StrapiSingleResponse } from '../../../types/strapi';
 
 // --- Strapi DTOs ---
 
@@ -96,15 +96,12 @@ export const resumenApi = {
     getLas5Articles: async (date: string) => {
         return withMockFallback<ResumenArticle[]>(
             async () => {
-                const response = await strapiClient.get<StrapiResumenArticleAttrs>('/resumen-articles', {
+                const response = await strapiClient.get<StrapiCollectionResponse<StrapiResumenArticleAttrs>>('/resumen-articles', {
                     'filters[type][$eq]': 'las-5',
                     'filters[date][$eq]': date,
                     'populate': '*'
                 });
-                if (Array.isArray(response.data)) {
-                    return response.data.map(normalizeResumenArticle);
-                }
-                return [];
+                return response.data.map(normalizeResumenArticle);
             },
             MOCK_LAS_5,
             'resumen/las-5'
@@ -113,15 +110,12 @@ export const resumenApi = {
     getOpinionArticles: async (date: string) => {
         return withMockFallback<ResumenArticle[]>(
             async () => {
-                const response = await strapiClient.get<StrapiResumenArticleAttrs>('/resumen-articles', {
+                const response = await strapiClient.get<StrapiCollectionResponse<StrapiResumenArticleAttrs>>('/resumen-articles', {
                     'filters[type][$eq]': 'opinion',
                     'filters[date][$eq]': date,
                     'populate': '*'
                 });
-                if (Array.isArray(response.data)) {
-                    return response.data.map(normalizeResumenArticle);
-                }
-                return [];
+                return response.data.map(normalizeResumenArticle);
             },
             MOCK_OPINION,
             'resumen/opinion'
@@ -130,12 +124,11 @@ export const resumenApi = {
     getPodcast: async (date: string) => {
         return withMockFallback<ResumenPodcast>(
             async () => {
-                const response = await strapiClient.get<StrapiPodcastAttrs>('/resumen-podcasts', {
+                const response = await strapiClient.get<StrapiCollectionResponse<StrapiPodcastAttrs>>('/resumen-podcasts', {
                     'filters[date][$eq]': date,
                     'populate': '*'
                 });
-                // Assuming single podcast per day, but API returns array
-                if (Array.isArray(response.data) && response.data.length > 0) {
+                if (response.data.length > 0) {
                     return normalizePodcast(response.data[0]);
                 }
                 throw new Error('No podcast found');
@@ -147,14 +140,11 @@ export const resumenApi = {
     getPhotos: async (date: string) => {
         return withMockFallback<ResumenPhoto[]>(
             async () => {
-                const response = await strapiClient.get<StrapiPhotoAttrs>('/resumen-photos', {
+                const response = await strapiClient.get<StrapiCollectionResponse<StrapiPhotoAttrs>>('/resumen-photos', {
                     'filters[date][$eq]': date,
                     'populate': '*'
                 });
-                if (Array.isArray(response.data)) {
-                    return response.data.map(normalizePhoto);
-                }
-                return [];
+                return response.data.map(normalizePhoto);
             },
             MOCK_PHOTOS,
             'resumen/photos'
@@ -163,14 +153,11 @@ export const resumenApi = {
     getCartoons: async (date: string) => {
         return withMockFallback<ResumenCartoon[]>(
             async () => {
-                const response = await strapiClient.get<StrapiCartoonAttrs>('/resumen-cartoons', {
+                const response = await strapiClient.get<StrapiCollectionResponse<StrapiCartoonAttrs>>('/resumen-cartoons', {
                     'filters[date][$eq]': date,
                     'populate': '*'
                 });
-                if (Array.isArray(response.data)) {
-                    return response.data.map(normalizeCartoon);
-                }
-                return [];
+                return response.data.map(normalizeCartoon);
             },
             MOCK_CARTOONS,
             'resumen/cartoons'
@@ -181,10 +168,10 @@ export const resumenApi = {
         const mockArticle = [...MOCK_LAS_5, ...MOCK_OPINION].find(a => a.id === id);
         return withMockFallback<ResumenArticle | undefined>(
             async () => {
-                const response = await strapiClient.getOne<StrapiResumenArticleAttrs>('/resumen-articles', id, {
+                const response = await strapiClient.getOne<StrapiSingleResponse<StrapiResumenArticleAttrs>>('/resumen-articles', id, {
                     'populate': '*'
                 });
-                if (response.data && !Array.isArray(response.data)) {
+                if (response.data) {
                     return normalizeResumenArticle(response.data);
                 }
                 return undefined;

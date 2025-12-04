@@ -7,10 +7,16 @@ import { EpaperCard } from '../components/EpaperCard';
 import { useEpaperDate } from '../hooks/useEpaperDate';
 import './EpaperHubPage.css';
 
+interface EpaperEdition {
+    id: string;
+    number: string;
+    date: string;
+}
+
 export const EpaperHubPage: React.FC = () => {
     const navigate = useNavigate();
     const { date: _date } = useParams<{ date: string }>();
-    const { currentDate, handleDateChange } = useEpaperDate();
+    const { displayDate: currentDate, handleDateChange } = useEpaperDate();
 
     const [editions, setEditions] = React.useState<Array<{ id: string; number: string; date: string }>>([]);
     const [page, setPage] = React.useState(1);
@@ -32,8 +38,8 @@ export const EpaperHubPage: React.FC = () => {
     }, [isLoading, hasMore]);
 
     // Mock data generation
-    const generateEditions = (pageNum: number, count: number) => {
-        const newEditions = [];
+    const generateEditions = (pageNum: number, count: number): EpaperEdition[] => {
+        const newEditions: EpaperEdition[] = [];
         const startId = (pageNum - 1) * count + 1;
         for (let i = 0; i < count; i++) {
             newEditions.push({
@@ -68,6 +74,15 @@ export const EpaperHubPage: React.FC = () => {
         setHasMore(true);
     }, [currentDate]);
 
+    // Cleanup IntersectionObserver on unmount
+    React.useEffect(() => {
+        return () => {
+            if (observer.current) {
+                observer.current.disconnect();
+            }
+        };
+    }, []);
+
     return (
         <PageWrapper>
             <HeaderHubs
@@ -84,8 +99,7 @@ export const EpaperHubPage: React.FC = () => {
                                 <div ref={lastEditionElementRef} key={edition.id}>
                                     <EpaperCard
                                         date={edition.date}
-                                        editionNumber={edition.number}
-                                        onClick={() => navigate(`/EPaper/${currentDate}/${edition.number}`)}
+                                        onClick={() => navigate(`/EPaper/${edition.date}/view`)}
                                     />
                                 </div>
                             );
@@ -94,15 +108,14 @@ export const EpaperHubPage: React.FC = () => {
                                 <EpaperCard
                                     key={edition.id}
                                     date={edition.date}
-                                    editionNumber={edition.number}
-                                    onClick={() => navigate(`/EPaper/${currentDate}/${edition.number}`)}
+                                    onClick={() => navigate(`/EPaper/${edition.date}/view`)}
                                 />
                             );
                         }
                     })}
                 </Grid>
                 {isLoading && (
-                    <div style={{ textAlign: 'center', padding: '20px', width: '100%' }}>
+                    <div className="epaper-hub-page__loading">
                         Loading more editions...
                     </div>
                 )}

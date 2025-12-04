@@ -4,18 +4,20 @@ import { PageWrapper } from '../../../components/Layout/PageWrapper';
 import { Section } from '../../../components/Layout';
 import { HeaderContent } from '../../noticiasHub/components/HeaderContent';
 import { PdfViewer } from '../components/PdfViewer';
+import { useShare } from '../../../hooks/useShare';
 import { AiChatBar } from '../../../components/AiChatBar';
 import './EpaperEditionPage.css';
 
 export const EpaperEditionPage: React.FC = () => {
     const { date, editionNumber } = useParams<{ date: string; editionNumber: string }>();
     const navigate = useNavigate();
+    const { handleShare } = useShare();
 
     return (
         <PageWrapper>
             <HeaderContent
                 onBack={() => navigate(`/EPaper/${date}`)}
-                onShare={() => alert('Share clicked')}
+                onShare={() => handleShare({ title: `EPaper - Edición ${editionNumber}` })}
             />
 
             <Section padding="none">

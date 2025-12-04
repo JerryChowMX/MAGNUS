@@ -8,18 +8,17 @@
     padding: 0 var(--spacing-md) var(--spacing-xs);
     font-family: 'Blinker', sans-serif;
     font-weight: 600;
-    font-size: var(--font-size-sm);
-    color: var(--text-color-secondary);
+    font-size: var(--font-size-caption);
+    color: var(--text-tertiary);
     text-transform: uppercase;
     letter-spacing: 0.05em;
 }
 
 .settings-section__content {
-    background-color: var(--surface-color);
+    background-color: var(--bg-secondary);
     border-radius: var(--radius-md);
     overflow: hidden;
-    /* Optional: Add border if desired */
-    /* border: 1px solid var(--border-color); */
+    border: 1px solid var(--border-secondary);
 }
 
 .settings-section__content>.settings-row:last-child {

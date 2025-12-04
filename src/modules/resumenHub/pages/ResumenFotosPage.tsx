@@ -7,17 +7,19 @@ import { HeaderContent } from '../../noticiasHub/components/HeaderContent';
 import { ResumenPhotoGallery } from '../components/ResumenPhotoGallery';
 import { useResumenDate } from '../hooks/useResumenDate';
 import { useResumenPhotos } from '../hooks/useResumenPhotos';
+import { useShare } from '../../../hooks/useShare';
 
 export const ResumenFotosPage: React.FC = () => {
     const navigate = useNavigate();
     const { currentDate } = useResumenDate();
     const { photos, isLoading, error } = useResumenPhotos(currentDate);
+    const { handleShare } = useShare();
 
     return (
         <PageWrapper>
             <HeaderContent
                 onBack={() => navigate(`/ResumenHub/${currentDate}`)}
-                onShare={() => alert('Share clicked')}
+                onShare={() => handleShare({ title: 'Fotos del día' })}
             />
 
             <Section padding="md">

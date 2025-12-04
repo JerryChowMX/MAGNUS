@@ -101,6 +101,12 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({ user, onLogin, onEdit,
                             placeholder="Agrega una descripción..."
                             value={description}
                             onChange={handleDescriptionChange}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter' && !e.shiftKey) {
+                                    e.preventDefault();
+                                    handleSaveDescription();
+                                }
+                            }}
                         />
                         <div className="profile-card__footer">
                             <span className="profile-card__char-count">

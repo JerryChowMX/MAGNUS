@@ -4,38 +4,29 @@
     align-content: center;
     gap: var(--spacing-md);
     padding: 24px;
-    background-color: #FFFFFF;
-    /* White tile like the screenshot */
+    background-color: var(--bg-secondary);
     border-radius: 10px;
-    /* Soft corners */
     cursor: pointer;
     transition: border-color 0.15s ease,
         box-shadow 0.15s ease,
         transform 0.15s ease;
-    border: 1px solid #E5E5E5;
-    /* Light gray border */
+    border: 1px solid var(--border-secondary);
     width: 100%;
     aspect-ratio: 1;
-    /* Square */
     text-align: center;
     position: relative;
     box-shadow: none;
-    /* No initial shadow */
 }
 
 .resumen-option-card:hover {
     transform: translateY(-1px);
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
-    /* Very soft hover shadow */
-    border-color: #D4D4D4;
-    /* Slightly darker border */
+    box-shadow: var(--shadow-1);
+    border-color: var(--border-primary);
 }
 
 .resumen-option-card__icon {
     font-size: 3.25rem;
-    /* Large icon size */
-    color: #000000;
-    /* Solid black */
+    color: var(--text-primary);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -50,9 +41,9 @@
 }
 
 .resumen-option-card__label {
-    font-size: 0.9rem;
+    font-size: var(--font-size-body);
     font-weight: 500;
-    color: #111111;
+    color: var(--text-primary);
     line-height: 1.2;
 }
 
@@ -60,14 +51,14 @@
     position: absolute;
     top: 12px;
     right: 12px;
-    background-color: var(--color-brand-orange, #FF6600);
+    background-color: var(--color-brand-orange);
     color: #FFFFFF;
-    font-size: 0.65rem;
+    font-size: var(--font-size-caption);
     font-weight: 700;
     padding: 4px 8px;
     border-radius: 4px;
     text-transform: uppercase;
     z-index: 10;
     letter-spacing: 0.5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }

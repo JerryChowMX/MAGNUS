@@ -7,17 +7,19 @@ import { HeaderContent } from '../../noticiasHub/components/HeaderContent';
 import { ResumenPodcastPlayer } from '../components/ResumenPodcastPlayer';
 import { useResumenDate } from '../hooks/useResumenDate';
 import { useResumenPodcast } from '../hooks/useResumenPodcast';
+import { useShare } from '../../../hooks/useShare';
 
 export const ResumenPodcastPage: React.FC = () => {
     const navigate = useNavigate();
     const { currentDate } = useResumenDate();
     const { podcast, isLoading, error } = useResumenPodcast(currentDate);
+    const { handleShare } = useShare();
 
     return (
         <PageWrapper>
             <HeaderContent
                 onBack={() => navigate(`/ResumenHub/${currentDate}`)}
-                onShare={() => alert('Share clicked')}
+                onShare={() => podcast && handleShare({ title: podcast.title })}
             />
 
             <Section padding="md">

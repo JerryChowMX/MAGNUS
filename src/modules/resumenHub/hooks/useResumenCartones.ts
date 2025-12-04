@@ -1,28 +1,16 @@
-import { useState, useEffect } from 'react';
 import { resumenApi } from '../services/resumenApi';
-import type { ResumenCartoon } from '../../../types/resumen';
+import { useApiData } from '../../../hooks/useApiData';
 
 export const useResumenCartones = (date: string) => {
-    const [cartoons, setCartoons] = useState<ResumenCartoon[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState<Error | null>(null);
-    const [isFallback, setIsFallback] = useState(false);
+    const { data, isLoading, error, isFallback } = useApiData(
+        () => resumenApi.getCartoons(date),
+        [date]
+    );
 
-    useEffect(() => {
-        const fetch = async () => {
-            setIsLoading(true);
-            try {
-                const { data, isFallback } = await resumenApi.getCartoons(date);
-                setCartoons(data);
-                setIsFallback(isFallback);
-            } catch (err) {
-                setError(err instanceof Error ? err : new Error('Failed to fetch'));
-            } finally {
-                setIsLoading(false);
-            }
-        };
-        fetch();
-    }, [date]);
-
-    return { cartoons, isLoading, error, isFallback };
+    return {
+        cartoons: data || [],
+        isLoading,
+        error,
+        isFallback
+    };
 };

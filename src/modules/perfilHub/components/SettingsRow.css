@@ -2,24 +2,26 @@
     display: flex;
     align-items: center;
     padding: var(--spacing-md);
-    background-color: var(--surface-color);
-    border-bottom: 1px solid var(--border-color);
+    background-color: transparent;
+    border-bottom: 1px solid var(--border-secondary);
     cursor: pointer;
     transition: background-color 0.2s;
     width: 100%;
-    border: none;
+    border-left: none;
+    border-right: none;
+    border-top: none;
     text-align: left;
 }
 
 .settings-row:hover {
-    background-color: var(--surface-color-hover);
+    background-color: var(--bg-tertiary);
 }
 
 .settings-row__icon {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--text-color-secondary);
+    color: var(--text-secondary);
     margin-right: var(--spacing-md);
 }
 
@@ -27,13 +29,13 @@
     flex: 1;
     font-family: 'Blinker', sans-serif;
     font-weight: 500;
-    font-size: var(--font-size-md);
-    color: var(--text-color-primary);
+    font-size: var(--font-size-body);
+    color: var(--text-primary);
 }
 
 .settings-row__chevron {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--text-color-tertiary);
+    color: var(--text-tertiary);
 }

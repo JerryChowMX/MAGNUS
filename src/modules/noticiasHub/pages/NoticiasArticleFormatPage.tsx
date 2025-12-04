@@ -6,7 +6,9 @@ import { Headline, Body } from '../../../components/Typography/Typography';
 import { AudioPlayer } from '../../../components/AudioPlayer/AudioPlayer';
 import { HeaderContent } from '../components/HeaderContent';
 import { useNoticiasArticle } from '../hooks/useNoticiasArticle';
+import { FALLBACK_AUDIO_URL } from '../../../constants/media';
 import type { ArticleFormat } from '../types/noticias.types';
+import { useShare } from '../../../hooks/useShare';
 
 import './NoticiasArticleFormatPage.css';
 
@@ -14,6 +16,7 @@ export const NoticiasArticleFormatPage: React.FC = () => {
     const { date, slug, format } = useParams<{ date: string; slug: string; format: string }>();
     const navigate = useNavigate();
     const { article, isLoading, error } = useNoticiasArticle(slug || '');
+    const { handleShare } = useShare();
 
     if (isLoading) return <PageWrapper><Section padding="md"><Body>Loading...</Body></Section></PageWrapper>;
     if (error || !article) return <PageWrapper><Section padding="md"><Body>Article not found.</Body></Section></PageWrapper>;
@@ -39,7 +42,7 @@ export const NoticiasArticleFormatPage: React.FC = () => {
                 return (
                     <Stack spacing="md">
                         <Headline level={3}>Resumen de Audio</Headline>
-                        <AudioPlayer src={article.audioUrl || 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'} />
+                        <AudioPlayer src={article.audioUrl || FALLBACK_AUDIO_URL} />
                     </Stack>
                 );
             case 'guiada':
@@ -59,7 +62,7 @@ export const NoticiasArticleFormatPage: React.FC = () => {
         <PageWrapper>
             <HeaderContent
                 onBack={() => navigate(`/NoticiasHub/${date}/${slug}`)}
-                onShare={() => alert('Share clicked')}
+                onShare={() => article && handleShare({ title: article.title })}
             />
 
             <Section padding="md">

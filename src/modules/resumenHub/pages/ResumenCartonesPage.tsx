@@ -7,17 +7,19 @@ import { HeaderContent } from '../../noticiasHub/components/HeaderContent';
 import { ResumenCartoonStrip } from '../components/ResumenCartoonStrip';
 import { useResumenDate } from '../hooks/useResumenDate';
 import { useResumenCartones } from '../hooks/useResumenCartones';
+import { useShare } from '../../../hooks/useShare';
 
 export const ResumenCartonesPage: React.FC = () => {
     const navigate = useNavigate();
     const { currentDate } = useResumenDate();
     const { cartoons, isLoading, error } = useResumenCartones(currentDate);
+    const { handleShare } = useShare();
 
     return (
         <PageWrapper>
             <HeaderContent
                 onBack={() => navigate(`/ResumenHub/${currentDate}`)}
-                onShare={() => alert('Share clicked')}
+                onShare={() => handleShare({ title: 'Cartones del día' })}
             />
 
             <Section padding="md">

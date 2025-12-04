@@ -8,12 +8,14 @@ import { FormatSelectionGrid } from '../components/FormatSelectionGrid';
 import { ZoomableImage } from '../../../components/Media/ZoomableImage';
 import { AiChatBar } from '../../../components/AiChatBar';
 import { useNoticiasArticle } from '../hooks/useNoticiasArticle';
+import { useShare } from '../../../hooks/useShare';
 import './NoticiasArticlePage.css';
 
 export const NoticiasArticlePage: React.FC = () => {
     const { date, slug } = useParams<{ date: string; slug: string }>();
     const navigate = useNavigate();
     const { article, isLoading, error } = useNoticiasArticle(slug || '');
+    const { handleShare } = useShare();
 
     if (isLoading) return <PageWrapper><Section padding="md"><Body>Loading...</Body></Section></PageWrapper>;
     if (error || !article) return <PageWrapper><Section padding="md"><Body>Article not found.</Body></Section></PageWrapper>;
@@ -22,7 +24,7 @@ export const NoticiasArticlePage: React.FC = () => {
         <PageWrapper>
             <HeaderContent
                 onBack={() => navigate(`/NoticiasHub/${date}`)}
-                onShare={() => alert('Share clicked')}
+                onShare={() => article && handleShare({ title: article.title })}
             />
 
             <Section padding="none">

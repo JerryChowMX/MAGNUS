@@ -14,22 +14,25 @@ import { OptionSelector } from '../components/OptionSelector';
 import { useProfile } from '../hooks/useProfile';
 import { useAuth } from '../../../hooks/useAuth';
 import { Body } from '../../../components/Typography/Typography';
+import { useUserPreferences } from '../../../context/ThemeContext';
+import { SimulationBanner } from '../../../components/Alerts/SimulationBanner';
 import './PerfilHubPage.css';
 
 export const PerfilHubPage: React.FC = () => {
     const navigate = useNavigate();
     const { user, logout } = useAuth();
     const { settings, updateSettings, isLoading, error, isFallback } = useProfile();
+    const { theme, toggleTheme, fontSize, setFontSize } = useUserPreferences();
 
-    const handleLogin = () => {
+    const handleLogin = (): void => {
         navigate('/login');
     };
 
-    const handleEditProfile = () => {
+    const handleEditProfile = (): void => {
         console.log('Navigate to edit profile');
     };
 
-    const handleLogout = () => {
+    const handleLogout = (): void => {
         logout();
         navigate('/login');
     };
@@ -65,18 +68,7 @@ export const PerfilHubPage: React.FC = () => {
             />
 
             <div className="perfil-hub-page__content">
-                {isFallback && (
-                    <div style={{
-                        backgroundColor: '#FFF4E5',
-                        color: '#663C00',
-                        padding: '8px 16px',
-                        textAlign: 'center',
-                        fontSize: '12px',
-                        fontWeight: 'bold'
-                    }}>
-                        Modo Simulación (Backend no conectado)
-                    </div>
-                )}
+                {isFallback && <SimulationBanner />}
 
                 <Section padding="md">
                     <Stack spacing="lg">
@@ -141,8 +133,11 @@ export const PerfilHubPage: React.FC = () => {
                                 <div className="perfil-hub-page__preferences-row">
                                     <span className="perfil-hub-page__preferences-label">Modo oscuro</span>
                                     <ToggleSwitch
-                                        checked={settings.theme === 'dark'}
-                                        onChange={(checked) => updateSettings({ theme: checked ? 'dark' : 'light' })}
+                                        checked={theme === 'dark'}
+                                        onChange={(checked) => {
+                                            toggleTheme();
+                                            updateSettings({ theme: checked ? 'dark' : 'light' });
+                                        }}
                                     />
                                 </div>
                                 <div className="perfil-hub-page__preferences-row">
@@ -153,8 +148,8 @@ export const PerfilHubPage: React.FC = () => {
                                             { label: 'A+', value: 'medium' },
                                             { label: 'A++', value: 'large' },
                                         ]}
-                                        value={settings.fontSize}
-                                        onChange={(val) => updateSettings({ fontSize: val as any })}
+                                        value={fontSize}
+                                        onChange={(val) => setFontSize(val as 'small' | 'medium' | 'large')}
                                     />
                                 </div>
                                 <div className="perfil-hub-page__preferences-row">
@@ -174,19 +169,10 @@ export const PerfilHubPage: React.FC = () => {
                             </SettingsSection>
                         )}
 
-                        <div style={{ marginTop: '20px' }}>
+                        <div className="perfil-hub-page__logout-container">
                             <button
                                 onClick={handleLogout}
-                                style={{
-                                    width: '100%',
-                                    padding: '12px',
-                                    backgroundColor: '#fee2e2',
-                                    color: '#dc2626',
-                                    border: 'none',
-                                    borderRadius: '8px',
-                                    fontWeight: 600,
-                                    cursor: 'pointer'
-                                }}
+                                className="perfil-hub-page__logout-button"
                             >
                                 Cerrar Sesión
                             </button>

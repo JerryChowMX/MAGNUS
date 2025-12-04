@@ -1,5 +1,5 @@
 import { ZoomableImage } from '../../../components/Media/ZoomableImage';
-import type { ResumenPhoto } from '../types/resumen.types';
+import type { ResumenPhoto } from '../../../types/resumen';
 import './ResumenPhotoGallery.css';
 
 export interface ResumenPhotoGalleryProps {

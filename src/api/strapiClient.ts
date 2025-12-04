@@ -1,4 +1,4 @@
-import type { StrapiResponse } from "../types/strapi";
+
 
 export interface StrapiClientConfig {
     baseUrl?: string;
@@ -40,16 +40,16 @@ class StrapiClient {
         return response.json();
     }
 
-    async get<T>(endpoint: string, params?: Record<string, string>): Promise<StrapiResponse<T>> {
+    async get<T>(endpoint: string, params?: Record<string, string>): Promise<T> {
         const queryString = params ? "?" + new URLSearchParams(params).toString() : "";
-        return this.request<StrapiResponse<T>>(`${endpoint}${queryString}`, {
+        return this.request<T>(`${endpoint}${queryString}`, {
             method: "GET",
         });
     }
 
-    async getOne<T>(endpoint: string, id: string | number, params?: Record<string, string>): Promise<StrapiResponse<T>> {
+    async getOne<T>(endpoint: string, id: string | number, params?: Record<string, string>): Promise<T> {
         const queryString = params ? "?" + new URLSearchParams(params).toString() : "";
-        return this.request<StrapiResponse<T>>(`${endpoint}/${id}${queryString}`, {
+        return this.request<T>(`${endpoint}/${id}${queryString}`, {
             method: "GET",
         });
     }

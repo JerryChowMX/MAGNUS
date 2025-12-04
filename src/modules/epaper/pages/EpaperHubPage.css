@@ -2,3 +2,27 @@
     display: grid;
     gap: var(--spacing-md);
 }
+
+.epaper-card-wrapper--filtered {
+    position: relative;
+}
+
+.epaper-card-wrapper--filtered .epaper-card {
+    border: 2px solid var(--color-primary, #ff7700);
+    box-shadow: 0 0 0 4px rgba(255, 119, 0, 0.1);
+}
+
+.epaper-card-wrapper--filtered::after {
+    content: "Filtrado";
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: var(--color-primary, #ff7700);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    z-index: 10;
+    pointer-events: none;
+}

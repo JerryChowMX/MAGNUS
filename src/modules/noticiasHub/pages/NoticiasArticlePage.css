@@ -15,7 +15,7 @@
 }
 
 .noticias-article-title {
-    font-size: 2.5rem !important;
+    font-size: var(--font-size-h1) !important;
     font-weight: 800 !important;
     line-height: 1.1 !important;
     margin-bottom: var(--spacing-sm);
@@ -23,7 +23,7 @@
 }
 
 .noticias-article-instruction {
-    font-size: 1rem !important;
+    font-size: var(--font-size-body) !important;
     font-weight: 400 !important;
     opacity: 0.8;
     margin-bottom: var(--spacing-lg);

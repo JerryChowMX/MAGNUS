@@ -2,7 +2,7 @@ import React from 'react';
 import { Stack } from '../../../components/Layout';
 import { Headline, Caption } from '../../../components/Typography/Typography';
 import { ZoomableImage } from '../../../components/Media/ZoomableImage';
-import type { ResumenCartoon } from '../types/resumen.types';
+import type { ResumenCartoon } from '../../../types/resumen';
 import './ResumenCartoonStrip.css';
 
 export interface ResumenCartoonStripProps {

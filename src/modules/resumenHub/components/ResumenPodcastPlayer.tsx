@@ -2,7 +2,7 @@ import React from 'react';
 import { Stack } from '../../../components/Layout';
 import { Headline, Body } from '../../../components/Typography/Typography';
 import { AudioPlayer } from '../../../components/AudioPlayer/AudioPlayer';
-import type { ResumenPodcast } from '../types/resumen.types';
+import type { ResumenPodcast } from '../../../types/resumen';
 import './ResumenPodcastPlayer.css';
 
 export interface ResumenPodcastPlayerProps {

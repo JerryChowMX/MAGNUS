@@ -14,6 +14,7 @@ export interface HeaderHubsProps {
     currentDate: string;
     onDateChange: (date: string) => void;
     onBack?: () => void;
+    onFilter?: (date: string) => void; // Optional: if provided, enables filter mode
 }
 
 const CalendarIcon = () => (
@@ -43,7 +44,8 @@ export const HeaderHubs: React.FC<HeaderHubsProps> = ({
     variant = "light",
     currentDate,
     onDateChange,
-    onBack
+    onBack,
+    onFilter
 }) => {
     const { isScrolled } = useScrolledHeader();
     const navigate = useNavigate();
@@ -60,7 +62,13 @@ export const HeaderHubs: React.FC<HeaderHubsProps> = ({
         if (date) {
             // Format to YYYY-MM-DD
             const formattedDate = date.toISOString().split('T')[0];
-            onDateChange(formattedDate);
+
+            // If onFilter is provided, use filter mode; otherwise navigate
+            if (onFilter) {
+                onFilter(formattedDate);
+            } else {
+                onDateChange(formattedDate);
+            }
         }
     };
 

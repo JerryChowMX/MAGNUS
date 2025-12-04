@@ -1,0 +1,93 @@
+import React from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { PageWrapper } from '../../../components/Layout/PageWrapper';
+import { Section, Stack } from '../../../components/Layout';
+import { Headline, Body } from '../../../components/Typography/Typography';
+import { AudioPlayer } from '../../../components/AudioPlayer/AudioPlayer';
+import { HeaderContent } from '../../noticiasHub/components/HeaderContent';
+import { useResumenArticle } from '../hooks/useResumenArticle';
+import type { ArticleFormat } from '../../noticiasHub/types/noticias.types';
+import { RichTextRenderer } from '../../../components/RichTextRenderer/RichTextRenderer';
+import { FALLBACK_AUDIO_URL } from '../../../constants/media';
+import { useShare } from '../../../hooks/useShare';
+
+export interface ResumenArticleFormatPageProps {
+    backPath: string;
+}
+
+export const ResumenArticleFormatPage: React.FC<ResumenArticleFormatPageProps> = ({
+    backPath
+}) => {
+    const { slug, format } = useParams<{ slug: string; format: string }>();
+    const navigate = useNavigate();
+    const { article, loading, error } = useResumenArticle(slug);
+    const { handleShare } = useShare();
+
+    if (loading) {
+        return (
+            <PageWrapper>
+                <Section padding="md">
+                    <Body>Loading...</Body>
+                </Section>
+            </PageWrapper>
+        );
+    }
+
+    if (error) {
+        return (
+            <PageWrapper>
+                <HeaderContent
+                    onBack={() => navigate(backPath)}
+                    onShare={() => handleShare({ title: 'Article' })}
+                />
+                <Section padding="md">
+                    <Body color="error">
+                        Error loading article: {error.message}
+                    </Body>
+                </Section>
+            </PageWrapper>
+        );
+    }
+
+    if (!article) {
+        return (
+            <PageWrapper>
+                <Section padding="md">
+                    <Body>Article not found.</Body>
+                </Section>
+            </PageWrapper>
+        );
+    }
+
+    const renderContent = () => {
+        switch (format as ArticleFormat) {
+            case 'original':
+                return <RichTextRenderer content={article.content || 'Contenido original no disponible.'} />;
+            case 'ejecutivo':
+                return <Body>{article.summary || 'Resumen no disponible.'}</Body>;
+            case 'audio':
+                return <AudioPlayer src={article.audioUrl || FALLBACK_AUDIO_URL} />;
+            case 'guiada':
+                return <Body>[Presentación Guiada Placeholder]</Body>;
+            default:
+                return <Body>Unknown format</Body>;
+        }
+    };
+
+    return (
+        <PageWrapper>
+            <HeaderContent
+                onBack={() => navigate(backPath)}
+                onShare={() => article && handleShare({ title: article.title })}
+            />
+
+            <Section padding="md">
+                <Stack spacing="lg">
+                    <Headline level={2}>{article.title}</Headline>
+                    <Headline level={4}>Format: {format}</Headline>
+                    {renderContent()}
+                </Stack>
+            </Section>
+        </PageWrapper>
+    );
+};

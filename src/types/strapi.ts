@@ -10,16 +10,21 @@ export interface StrapiData<T = StrapiAttributes> {
     attributes: T;
 }
 
-export interface StrapiResponse<T = StrapiAttributes> {
-    data: StrapiData<T> | StrapiData<T>[];
+export interface StrapiCollectionResponse<T = StrapiAttributes> {
+    data: StrapiData<T>[];
     meta: {
-        pagination?: {
+        pagination: {
             page: number;
             pageSize: number;
             pageCount: number;
             total: number;
         };
     };
+}
+
+export interface StrapiSingleResponse<T = StrapiAttributes> {
+    data: StrapiData<T> | null;
+    meta: object;
 }
 
 export interface StrapiMediaAttributes {

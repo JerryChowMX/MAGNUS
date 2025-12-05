@@ -11,6 +11,7 @@ import { useResumenArticle } from '../hooks/useResumenArticle';
 import { useShare } from '../../../hooks/useShare';
 import { ShareModal } from '../../../components/ShareModal';
 import { trackArticleView } from '../../../lib/analytics';
+import { useScrollTracking } from '../../../hooks/useScrollTracking';
 import './ResumenArticlePage.css';
 
 export interface ResumenArticlePageProps {
@@ -26,6 +27,9 @@ export const ResumenArticlePage: React.FC<ResumenArticlePageProps> = ({
     const navigate = useNavigate();
     const { article, loading, error } = useResumenArticle(slug);
     const { handleShare, isModalOpen, closeModal, shareData } = useShare();
+
+    // Scroll Analytics
+    useScrollTracking(article?.id, 'resumen');
 
     React.useEffect(() => {
         if (article) {
@@ -74,7 +78,14 @@ export const ResumenArticlePage: React.FC<ResumenArticlePageProps> = ({
         <PageWrapper>
             <HeaderContent
                 onBack={() => navigate(backPath)}
-                onShare={() => handleShare({ title: article.title })}
+                onShare={() => handleShare({
+                    title: article.title,
+                    analytics: {
+                        articleId: article.id,
+                        section: 'resumen',
+                        format: undefined
+                    }
+                })}
             />
 
             <Section padding="none">
@@ -122,6 +133,7 @@ export const ResumenArticlePage: React.FC<ResumenArticlePageProps> = ({
                 onClose={closeModal}
                 title={shareData?.title || ''}
                 url={shareData?.url}
+                analytics={shareData?.analytics}
             />
         </PageWrapper>
     );

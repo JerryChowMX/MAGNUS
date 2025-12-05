@@ -3,11 +3,13 @@ import './styles.css';
 
 interface AiChatBarCollapsedProps {
     onClick: () => void;
+    style?: React.CSSProperties;
+    className?: string;
 }
 
-export const AiChatBarCollapsed: React.FC<AiChatBarCollapsedProps> = ({ onClick }) => {
+export const AiChatBarCollapsed: React.FC<AiChatBarCollapsedProps> = ({ onClick, style, className }) => {
     return (
-        <div className="ai-chat-bar-container">
+        <div className={`ai-chat-bar-container ${className || ''}`} style={style}>
             <div className="ai-chat-bar-collapsed" onClick={onClick}>
                 <span className="ai-chat-bar-placeholder">Pregúntale a MAGNUS...</span>
                 <div className="ai-chat-bar-icon">

@@ -1,4 +1,5 @@
 import React from 'react';
+import { trackArticleShared } from '../../lib/analytics';
 import './ShareModal.css';
 
 export interface ShareModalProps {
@@ -7,6 +8,11 @@ export interface ShareModalProps {
     title: string;
     url?: string;
     text?: string;
+    analytics?: {
+        articleId: string;
+        section: string;
+        format?: string;
+    };
 }
 
 interface ShareOption {
@@ -21,11 +27,15 @@ export const ShareModal: React.FC<ShareModalProps> = ({
     isOpen,
     onClose,
     title,
-    url = window.location.href
+    url = window.location.href,
+    analytics
 }) => {
     const handleCopyLink = async () => {
         try {
             await navigator.clipboard.writeText(url);
+            if (analytics) {
+                trackArticleShared(analytics.articleId, analytics.section, analytics.format, 'link');
+            }
             // TODO: Show toast notification
             console.log('Link copied to clipboard');
             onClose();
@@ -35,18 +45,27 @@ export const ShareModal: React.FC<ShareModalProps> = ({
     };
 
     const handleWhatsApp = () => {
+        if (analytics) {
+            trackArticleShared(analytics.articleId, analytics.section, analytics.format, 'whatsapp');
+        }
         const shareText = encodeURIComponent(`${title}\n\n${url}`);
         window.open(`https://wa.me/?text=${shareText}`, '_blank');
         onClose();
     };
 
     const handleFacebook = () => {
+        if (analytics) {
+            trackArticleShared(analytics.articleId, analytics.section, analytics.format, 'facebook');
+        }
         const shareUrl = encodeURIComponent(url);
         window.open(`https://www.facebook.com/sharer/sharer.php?u=${shareUrl}`, '_blank');
         onClose();
     };
 
     const handleTwitter = () => {
+        if (analytics) {
+            trackArticleShared(analytics.articleId, analytics.section, analytics.format, 'x');
+        }
         const shareText = encodeURIComponent(title);
         const shareUrl = encodeURIComponent(url);
         window.open(`https://twitter.com/intent/tweet?text=${shareText}&url=${shareUrl}`, '_blank');

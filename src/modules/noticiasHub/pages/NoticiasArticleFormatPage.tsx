@@ -10,6 +10,8 @@ import { FALLBACK_AUDIO_URL } from '../../../constants/media';
 import type { ArticleFormat } from '../types/noticias.types';
 import { useShare } from '../../../hooks/useShare';
 import { ShareModal } from '../../../components/ShareModal';
+import { useScrollTracking } from '../../../hooks/useScrollTracking';
+import { trackArticleView } from '../../../lib/analytics';
 
 import './NoticiasArticleFormatPage.css';
 
@@ -18,6 +20,15 @@ export const NoticiasArticleFormatPage: React.FC = () => {
     const navigate = useNavigate();
     const { article, isLoading, error } = useNoticiasArticle(slug || '');
     const { handleShare, isModalOpen, closeModal, shareData } = useShare();
+
+    // Scroll Analytics
+    useScrollTracking(article?.id, 'noticias', format as any);
+
+    React.useEffect(() => {
+        if (article) {
+            trackArticleView(article.id, 'noticias', format as any);
+        }
+    }, [article, format]);
 
     if (isLoading) return <PageWrapper><Section padding="md"><Body>Loading...</Body></Section></PageWrapper>;
     if (error || !article) return <PageWrapper><Section padding="md"><Body>Article not found.</Body></Section></PageWrapper>;
@@ -43,7 +54,10 @@ export const NoticiasArticleFormatPage: React.FC = () => {
                 return (
                     <Stack spacing="md">
                         <Headline level={3}>Resumen de Audio</Headline>
-                        <AudioPlayer src={article.audioUrl || FALLBACK_AUDIO_URL} />
+                        <AudioPlayer
+                            src={article.audioUrl || FALLBACK_AUDIO_URL}
+                            analytics={{ articleId: article.id, section: 'noticias' }}
+                        />
                     </Stack>
                 );
             case 'guiada':
@@ -63,7 +77,14 @@ export const NoticiasArticleFormatPage: React.FC = () => {
         <PageWrapper>
             <HeaderContent
                 onBack={() => navigate(`/NoticiasHub/${date}/${slug}`)}
-                onShare={() => article && handleShare({ title: article.title })}
+                onShare={() => article && handleShare({
+                    title: article.title,
+                    analytics: {
+                        articleId: article.id,
+                        section: 'noticias',
+                        format: format
+                    }
+                })}
             />
 
             <Section padding="md">
@@ -78,6 +99,7 @@ export const NoticiasArticleFormatPage: React.FC = () => {
                 onClose={closeModal}
                 title={shareData?.title || ''}
                 url={shareData?.url}
+                analytics={shareData?.analytics}
             />
         </PageWrapper>
     );

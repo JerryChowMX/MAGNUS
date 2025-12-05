@@ -6,7 +6,7 @@ export interface StrapiClientConfig {
 }
 
 const DEFAULT_CONFIG: StrapiClientConfig = {
-    baseUrl: import.meta.env.VITE_STRAPI_URL || "http://localhost:1337",
+    baseUrl: import.meta.env.VITE_STRAPI_URL || "http://localhost:1337/api",
     token: import.meta.env.VITE_STRAPI_TOKEN,
 };
 
@@ -15,8 +15,39 @@ class StrapiClient {
     private token?: string;
 
     constructor(config: StrapiClientConfig = DEFAULT_CONFIG) {
-        this.baseUrl = config.baseUrl || "http://localhost:1337";
+        this.baseUrl = config.baseUrl || "http://localhost:1337/api";
         this.token = config.token;
+
+        // Try to load JWT from localStorage on init (for auth persistence)
+        const storedToken = localStorage.getItem('jwt');
+        if (storedToken) {
+            this.token = storedToken;
+        }
+    }
+
+    /**
+     * Set authentication token (JWT)
+     * Used after login to authenticate subsequent requests
+     */
+    setToken(token: string) {
+        this.token = token;
+        localStorage.setItem('jwt', token);
+    }
+
+    /**
+     * Clear authentication token
+     * Used on logout
+     */
+    clearToken() {
+        this.token = undefined;
+        localStorage.removeItem('jwt');
+    }
+
+    /**
+     * Get current token
+     */
+    getToken(): string | undefined {
+        return this.token;
     }
 
     private async request<T>(endpoint: string, options?: RequestInit): Promise<T> {
@@ -51,6 +82,26 @@ class StrapiClient {
         const queryString = params ? "?" + new URLSearchParams(params).toString() : "";
         return this.request<T>(`${endpoint}/${id}${queryString}`, {
             method: "GET",
+        });
+    }
+
+    async post<T>(endpoint: string, data?: unknown): Promise<T> {
+        return this.request<T>(endpoint, {
+            method: "POST",
+            body: data ? JSON.stringify(data) : undefined,
+        });
+    }
+
+    async put<T>(endpoint: string, data?: unknown): Promise<T> {
+        return this.request<T>(endpoint, {
+            method: "PUT",
+            body: data ? JSON.stringify(data) : undefined,
+        });
+    }
+
+    async delete<T>(endpoint: string): Promise<T> {
+        return this.request<T>(endpoint, {
+            method: "DELETE",
         });
     }
 }

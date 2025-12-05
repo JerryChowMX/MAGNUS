@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect, type ReactNode } from 'react';
 import { authApi } from '../services/authApi';
+import { strapiClient } from '../api/strapiClient';
 import type { User, LoginCredentials } from '../types/auth';
 
 interface AuthContextType {
@@ -13,7 +14,8 @@ interface AuthContextType {
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-const TOKEN_KEY = 'auth_token';
+// Use 'jwt' as the key to match strapiClient
+const TOKEN_KEY = 'jwt';
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const [user, setUser] = useState<User | null>(null);
@@ -25,14 +27,15 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             const storedToken = localStorage.getItem(TOKEN_KEY);
             if (storedToken) {
                 try {
-                    // In a real app, we would validate the token or fetch the user profile here
-                    // For now, we'll optimistically assume the token is valid and fetch the user
+                    // Token is already loaded in strapiClient from localStorage
+                    // Just fetch the current user to validate the session
                     const { data: userData } = await authApi.getCurrentUser();
                     setUser(userData);
                     setToken(storedToken);
                 } catch (error) {
                     console.error('Failed to bootstrap auth session', error);
-                    localStorage.removeItem(TOKEN_KEY);
+                    // Clear invalid token
+                    strapiClient.clearToken();
                     setToken(null);
                     setUser(null);
                 }
@@ -47,9 +50,13 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         setIsLoading(true);
         try {
             const { data: response } = await authApi.login(credentials);
+
+            // Set token in strapiClient for authenticated requests
+            strapiClient.setToken(response.token);
+
             setUser(response.user);
             setToken(response.token);
-            localStorage.setItem(TOKEN_KEY, response.token);
+            // Token is already saved to localStorage by strapiClient.setToken()
         } catch (error) {
             console.error('Login failed', error);
             throw error;
@@ -59,8 +66,10 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     };
 
     const logout = () => {
-        authApi.logout().catch(console.error); // Fire and forget
-        localStorage.removeItem(TOKEN_KEY);
+        // Call logout API (which clears strapiClient token)
+        authApi.logout().catch(console.error);
+
+        // Clear local state
         setUser(null);
         setToken(null);
     };

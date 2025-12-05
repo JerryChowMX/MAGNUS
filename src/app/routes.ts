@@ -24,4 +24,16 @@ export const routes = {
     epaperEdition: (date: string, editionNumber: string) => `/EPaper/${date}/${editionNumber}`,
 
     perfilHub: '/PerfilHub',
+
+    // Dev Routes
+    STAGING_ROOT: '/dev/staging',
+    playground: '/dev/playground',
+    PLAYGROUND_ARTICLE: '/dev/playground/article',
+    PLAYGROUND_ARTICLE_STANDARD: '/dev/playground/article/standard-one',
+    PLAYGROUND_ARTICLE_STANDARD_2: '/dev/playground/article/standard-two',
+    PLAYGROUND_HOME: '/dev/playground/home',
+    playgroundComponents: '/dev/playground/components',
+    PLAYGROUND_ARTICLE_COMPONENTS: '/dev/playground/components/articlecomponents',
+    PLAYGROUND_RECOMMENDED_ARTICLES: '/dev/playground/components/articlecomponents/recommended',
+    PLAYGROUND_AUTHOR_CARD: '/dev/playground/components/articlecomponents/authorcard',
 };

@@ -25,7 +25,14 @@ export const EpaperEditionPage: React.FC = () => {
         <PageWrapper>
             <HeaderContent
                 onBack={() => navigate(`/EPaper/${date}`)}
-                onShare={() => handleShare({ title: `EPaper - Edición ${editionNumber}` })}
+                onShare={() => handleShare({
+                    title: `EPaper - Edición ${editionNumber}`,
+                    analytics: {
+                        articleId: `epaper_${date}_${editionNumber}`,
+                        section: 'epaper',
+                        format: 'pdf'
+                    }
+                })}
             />
 
             <Section padding="none">
@@ -39,6 +46,7 @@ export const EpaperEditionPage: React.FC = () => {
                 onClose={closeModal}
                 title={shareData?.title || ''}
                 url={shareData?.url}
+                analytics={shareData?.analytics}
             />
         </PageWrapper>
     );

@@ -20,7 +20,14 @@ export const ResumenFotosPage: React.FC = () => {
         <PageWrapper>
             <HeaderContent
                 onBack={() => navigate(`/ResumenHub/${currentDate}`)}
-                onShare={() => handleShare({ title: 'Fotos del día' })}
+                onShare={() => handleShare({
+                    title: 'Fotos del día',
+                    analytics: {
+                        articleId: `resumen_photos_${currentDate}`,
+                        section: 'resumen',
+                        format: 'image'
+                    }
+                })}
             />
 
             <Section padding="md">
@@ -37,6 +44,7 @@ export const ResumenFotosPage: React.FC = () => {
                 onClose={closeModal}
                 title={shareData?.title || ''}
                 url={shareData?.url}
+                analytics={shareData?.analytics}
             />
         </PageWrapper>
     );

@@ -1,4 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { trackArticleCompleted } from '../../lib/analytics';
+import type { ArticleViewedProps } from '../../lib/analytics';
 import { Icons } from '../Icons';
 import './AudioPlayer.css';
 
@@ -6,9 +8,13 @@ export interface AudioPlayerProps {
     src: string;
     onLike?: () => void;
     isLiked?: boolean;
+    analytics?: {
+        articleId: string;
+        section: ArticleViewedProps['section'];
+    };
 }
 
-export const AudioPlayer: React.FC<AudioPlayerProps> = ({ src, onLike, isLiked = false }) => {
+export const AudioPlayer: React.FC<AudioPlayerProps> = ({ src, onLike, isLiked = false, analytics }) => {
     const audioRef = useRef<HTMLAudioElement>(null);
     const [isPlaying, setIsPlaying] = useState(false);
     const [currentTime, setCurrentTime] = useState(0);
@@ -22,7 +28,12 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = ({ src, onLike, isLiked =
 
         const updateTime = () => setCurrentTime(audio.currentTime);
         const updateDuration = () => setDuration(audio.duration);
-        const onEnded = () => setIsPlaying(false);
+        const onEnded = () => {
+            setIsPlaying(false);
+            if (analytics) {
+                trackArticleCompleted(analytics.articleId, analytics.section, 'audio');
+            }
+        };
 
         audio.addEventListener('timeupdate', updateTime);
         audio.addEventListener('loadedmetadata', updateDuration);

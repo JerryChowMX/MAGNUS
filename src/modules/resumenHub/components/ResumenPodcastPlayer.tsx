@@ -21,7 +21,10 @@ export const ResumenPodcastPlayer: React.FC<ResumenPodcastPlayerProps> = ({ podc
                     )}
                     <Body>{podcast.description}</Body>
                     <span className="resumen-podcast-player__duration">{podcast.duration}</span>
-                    <AudioPlayer src={podcast.audioUrl} />
+                    <AudioPlayer
+                        src={podcast.audioUrl}
+                        analytics={{ articleId: podcast.id, section: 'resumen' }}
+                    />
                 </Stack>
             </div>
         </div>

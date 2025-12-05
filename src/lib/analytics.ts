@@ -286,3 +286,30 @@ export function trackArticleShared(
     });
 }
 
+export function trackEpaperDateFiltered(
+    selectedDate: string
+) {
+    track({
+        name: 'epaper_date_filtered',
+        properties: {
+            selected_date: selectedDate,
+        },
+    });
+}
+
+export function trackArticleCompleted(
+    articleId: string,
+    section: ArticleViewedProps['section'],
+    format?: ArticleViewedProps['format']
+) {
+    track({
+        name: 'article_completed',
+        properties: {
+            article_id: articleId,
+            section,
+            format,
+        },
+    });
+}
+
+

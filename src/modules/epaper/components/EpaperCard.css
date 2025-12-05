@@ -7,11 +7,46 @@
     background: var(--bg-primary);
     display: flex;
     flex-direction: column;
+    position: relative;
 }
 
 .epaper-card:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.epaper-card--disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.epaper-card--disabled:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+.epaper-card__badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    z-index: 10;
+    pointer-events: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.epaper-card__badge--upcoming {
+    background: var(--color-info, #3b82f6);
+    color: white;
+}
+
+.epaper-card__badge--unavailable {
+    background: var(--color-text-tertiary, #9ca3af);
+    color: white;
 }
 
 .epaper-card-image {

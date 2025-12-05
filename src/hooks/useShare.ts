@@ -1,9 +1,15 @@
 import { useCallback, useState } from 'react';
+import { trackArticleShared } from '../lib/analytics';
 
 export interface ShareParams {
     title: string;
     text?: string;
     url?: string;
+    analytics?: {
+        articleId: string;
+        section: string;
+        format?: string;
+    };
 }
 
 export interface ShareResult {
@@ -13,14 +19,6 @@ export interface ShareResult {
 
 /**
  * Hook for sharing content using Web Share API with modal fallback
- * 
- * @returns {object} - Share handlers and modal state
- * @property {function} handleShare - Main share function (tries native first)
- * @property {function} handleShareWithModal - Force use of custom modal
- * @property {boolean} isModalOpen - Modal visibility state
- * @property {function} openModal - Open share modal
- * @property {function} closeModal - Close share modal
- * @property {ShareParams | null} shareData - Current share data
  */
 export const useShare = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -48,6 +46,17 @@ export const useShare = () => {
         if (navigator.share) {
             try {
                 await navigator.share(shareDataObj);
+
+                // Track native share success
+                if (params.analytics) {
+                    trackArticleShared(
+                        params.analytics.articleId,
+                        params.analytics.section,
+                        params.analytics.format,
+                        'other'
+                    );
+                }
+
                 return { success: true, method: 'native' };
             } catch (err) {
                 // User cancelled the share dialog

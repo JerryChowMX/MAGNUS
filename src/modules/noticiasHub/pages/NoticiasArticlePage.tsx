@@ -11,6 +11,7 @@ import { useNoticiasArticle } from '../hooks/useNoticiasArticle';
 import { useShare } from '../../../hooks/useShare';
 import { ShareModal } from '../../../components/ShareModal';
 import { trackArticleView } from '../../../lib/analytics';
+import { useScrollTracking } from '../../../hooks/useScrollTracking';
 import './NoticiasArticlePage.css';
 
 export const NoticiasArticlePage: React.FC = () => {
@@ -18,6 +19,9 @@ export const NoticiasArticlePage: React.FC = () => {
     const navigate = useNavigate();
     const { article, isLoading, error } = useNoticiasArticle(slug || '');
     const { handleShare, isModalOpen, closeModal, shareData } = useShare();
+
+    // Scroll Analytics
+    useScrollTracking(article?.id, 'noticias');
 
     React.useEffect(() => {
         if (article) {
@@ -32,7 +36,14 @@ export const NoticiasArticlePage: React.FC = () => {
         <PageWrapper>
             <HeaderContent
                 onBack={() => navigate(`/NoticiasHub/${date}`)}
-                onShare={() => article && handleShare({ title: article.title })}
+                onShare={() => article && handleShare({
+                    title: article.title,
+                    analytics: {
+                        articleId: article.id,
+                        section: 'noticias',
+                        format: undefined
+                    }
+                })}
             />
 
             <Section padding="none">
@@ -68,6 +79,7 @@ export const NoticiasArticlePage: React.FC = () => {
                 onClose={closeModal}
                 title={shareData?.title || ''}
                 url={shareData?.url}
+                analytics={shareData?.analytics}
             />
         </PageWrapper>
     );

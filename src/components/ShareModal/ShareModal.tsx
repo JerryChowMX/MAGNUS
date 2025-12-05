@@ -1,5 +1,6 @@
 import React from 'react';
 import { trackArticleShared } from '../../lib/analytics';
+import { useToast } from '../../context/ToastContext';
 import './ShareModal.css';
 
 export interface ShareModalProps {
@@ -30,17 +31,25 @@ export const ShareModal: React.FC<ShareModalProps> = ({
     url = window.location.href,
     analytics
 }) => {
+    const { showToast } = useToast();
     const handleCopyLink = async () => {
         try {
             await navigator.clipboard.writeText(url);
             if (analytics) {
                 trackArticleShared(analytics.articleId, analytics.section, analytics.format, 'link');
             }
-            // TODO: Show toast notification
-            console.log('Link copied to clipboard');
+            showToast({
+                type: 'success',
+                message: 'Enlace copiado al portapapeles',
+                duration: 3000,
+            });
             onClose();
         } catch (err) {
-            console.error('Failed to copy link:', err);
+            showToast({
+                type: 'error',
+                message: 'No se pudo copiar el enlace',
+                duration: 3000,
+            });
         }
     };
 

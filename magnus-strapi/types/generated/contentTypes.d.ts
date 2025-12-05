@@ -462,7 +462,7 @@ export interface ApiArticleArticle extends Struct.CollectionTypeSchema {
       'ai.executive-summary',
       false
     >;
-    hero_image: Schema.Attribute.Media<'images'> & Schema.Attribute.Required;
+    hero_image: Schema.Attribute.Media<'images'>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',

@@ -1,4 +1,4 @@
-
+import { STRAPI_URL, STRAPI_TOKEN } from '../lib/env';
 
 export interface StrapiClientConfig {
     baseUrl?: string;
@@ -6,8 +6,8 @@ export interface StrapiClientConfig {
 }
 
 const DEFAULT_CONFIG: StrapiClientConfig = {
-    baseUrl: import.meta.env.VITE_STRAPI_URL || "http://localhost:1337/api",
-    token: import.meta.env.VITE_STRAPI_TOKEN,
+    baseUrl: STRAPI_URL,
+    token: STRAPI_TOKEN,
 };
 
 class StrapiClient {
@@ -103,6 +103,37 @@ class StrapiClient {
         return this.request<T>(endpoint, {
             method: "DELETE",
         });
+    }
+
+    /**
+     * Execute a GraphQL query or mutation
+     */
+    async graphql<T>(query: string, variables?: Record<string, any>): Promise<T> {
+        // Adjust URL from /api to /graphql
+        // Assuming baseUrl ends with /api. If not, this logical might need hardening.
+        const graphqlUrl = this.baseUrl.replace(/\/api\/?$/, '/graphql');
+
+        const response = await fetch(graphqlUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                ...(this.token ? { Authorization: `Bearer ${this.token}` } : {}),
+            },
+            body: JSON.stringify({ query, variables }),
+        });
+
+        if (!response.ok) {
+            const error = new Error(`GraphQL Request Failed: ${response.status} ${response.statusText}`);
+            throw error;
+        }
+
+        const result = await response.json();
+        if (result.errors) {
+            console.error("GraphQL Errors:", result.errors);
+            throw new Error(`GraphQL Error: ${result.errors[0]?.message || 'Unknown error'}`);
+        }
+
+        return result.data;
     }
 }
 

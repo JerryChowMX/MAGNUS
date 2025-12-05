@@ -70,3 +70,82 @@ export interface StrapiMedia {
 export interface StrapiMediaArray {
     data: StrapiData<StrapiMediaAttributes>[] | null;
 }
+
+// Article-specific types
+export interface StrapiAuthorAttributes {
+    name: string;
+    slug: string;
+    bio?: string;
+    profile_picture?: StrapiMedia;
+    createdAt: string;
+    updatedAt: string;
+    publishedAt?: string;
+}
+
+export interface StrapiCategoryAttributes {
+    name: string;
+    slug: string;
+    color: string;
+    createdAt: string;
+    updatedAt: string;
+    publishedAt?: string;
+}
+
+export interface StrapiTagAttributes {
+    name: string;
+    slug: string;
+    createdAt: string;
+    updatedAt: string;
+    publishedAt?: string;
+}
+
+export interface StrapiArticleAttributes {
+    title: string;
+    slug: string;
+    excerpt: string;
+    content?: string;
+    reading_time: number;
+    publishedAt: string;
+    createdAt: string;
+    updatedAt: string;
+    hero_image?: StrapiMedia;
+    author?: {
+        data: StrapiData<StrapiAuthorAttributes> | null;
+    };
+    category?: {
+        data: StrapiData<StrapiCategoryAttributes> | null;
+    };
+    tags?: {
+        data: StrapiData<StrapiTagAttributes>[] | null;
+    };
+}
+
+// Flattened/Normalized Article type for frontend use
+export interface StrapiArticle {
+    documentId: string;
+    title: string;
+    slug: string;
+    excerpt: string;
+    publishedAt: string;
+    reading_time: number;
+    hero_image?: {
+        url: string;
+        alternativeText?: string;
+    };
+    author?: {
+        name: string;
+        slug: string;
+        profile_picture?: {
+            url: string;
+        };
+    };
+    category?: {
+        name: string;
+        slug: string;
+        color: string;
+    };
+    tags?: Array<{
+        name: string;
+        slug: string;
+    }>;
+}

@@ -12,6 +12,7 @@
 | Phase | Status | Duration | Completion Date |
 |-------|--------|----------|-----------------|
 | Phase 0: Pre-Implementation Setup | ✅ COMPLETE | 15 min | 2025-12-05 14:10 |
+| Phase 0.5: Local Setup & Auth Recovery | ✅ COMPLETE | 45 min | 2025-12-05 14:52 |
 | Phase 1: Core Collections | ✅ COMPLETE | 10 min | 2025-12-05 14:18 |
 | Phase 2: Component Architecture | ✅ COMPLETE | 10 min | 2025-12-05 14:21 |
 | Phase 3: Article Collection | ✅ COMPLETE | 15 min | 2025-12-05 14:24 |
@@ -174,8 +175,8 @@
 
 ---
 
-**Last Updated**: 2025-12-05 14:10  
-**Next Phase**: Phase 1 - Core Collections Setup
+**Last Updated**: 2025-12-05 14:55  
+**Next Phase**: Phase 14 - Frontend Integration
 
 ---
 
@@ -214,3 +215,25 @@
 ### Notes
 - **Critical Fix**: Renamed `video-summary` enum values from `720p`, `1080p`, `4k` to `HD_720p`, `HD_1080p`, `UHD_4k` to satisfy GraphQL naming conventions.
 - **Critical Fix**: Updated `strapiClient.ts` to point to `http://localhost:1337/api` instead of `http://localhost:1337`.
+
+---
+
+## 🔄 PHASE 14: Frontend Integration (In Progress)
+
+**Status**: 🔄 STARTED  
+**Date**: 2025-12-05  
+**Progress**: 40%
+
+### Tasks Completed
+
+#### 1. Backend Seeding ✅
+- [x] Created seeding script in `src/index.ts` to auto-populate the "Coahuila" article.
+- [x] Updated `article` schema to make `hero_image` optional (facilitates seeding without file upload).
+
+#### 2. Frontend API Layer ✅
+- [x] Enhanced `strapiClient.ts` with a `graphql()` method for executing queries.
+- [x] Created `src/services/articleApi.ts` with GraphQL queries for `getArticles` and `getArticleBySlug`.
+
+### Next Actions
+1. **Restart Strapi**: This is required to run the `bootstrap()` function and seed the database.
+2. **Connect UI**: Modify the Home Page or Article Page to use `articleApi.getArticles()`.

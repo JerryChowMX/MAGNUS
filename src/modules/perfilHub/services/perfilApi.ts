@@ -1,30 +1,42 @@
-import { apiClient } from '../../../api/apiClient';
+import { strapiClient } from '../../../api/strapiClient';
 import { withMockFallback } from '../../../api/mockFallback';
 import type { UserProfile, AppSettings } from '../../../types/perfil';
-import { MOCK_PROFILE } from '../mocks/profile.mock';
+import { MOCK_PROFILE, MOCK_SETTINGS } from '../mocks/profile.mock';
 
 export const perfilApi = {
     getUserProfile: async () => {
         return withMockFallback<UserProfile>(
-            () => apiClient.get<UserProfile>('/perfil/me'),
-            MOCK_PROFILE.profile,
-            'perfil/me'
+            async () => {
+                const response = await strapiClient.get('/users/me?populate=*');
+                // TODO: Add normalization function to transform Strapi user to UserProfile
+                return response as unknown as UserProfile;
+            },
+            MOCK_PROFILE,
+            'perfil/profile'
         );
     },
 
     getAppSettings: async () => {
         return withMockFallback<AppSettings>(
-            () => apiClient.get<AppSettings>('/perfil/settings'),
-            MOCK_PROFILE.settings,
+            async () => {
+                // TODO: Define proper Strapi collection for app settings
+                const response = await strapiClient.get('/app-settings');
+                return response as unknown as AppSettings;
+            },
+            MOCK_SETTINGS,
             'perfil/settings'
         );
     },
 
     updateAppSettings: async (settings: Partial<AppSettings>) => {
         return withMockFallback<AppSettings>(
-            () => apiClient.put<AppSettings>('/perfil/settings', settings),
-            { ...MOCK_PROFILE.settings, ...settings },
-            'perfil/settings/update'
+            async () => {
+                // TODO: Implement proper update endpoint
+                const response = await strapiClient.put('/app-settings', settings);
+                return response as unknown as AppSettings;
+            },
+            { ...MOCK_SETTINGS, ...settings },
+            'perfil/update-settings'
         );
     }
 };

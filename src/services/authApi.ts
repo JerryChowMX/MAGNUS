@@ -16,47 +16,39 @@ const MOCK_AUTH_RESPONSE: AuthResponse = {
     refreshToken: 'mock-refresh-token-789012'
 };
 
-/**
- * Auth API - Now using Strapi authentication
- * 
- * Strapi endpoints:
- * - POST /auth/local - Login with email/password
- * - GET /users/me - Get current authenticated user
- * - No logout endpoint (client-side token removal)
- */
 export const authApi = {
     /**
-     * Login user with email and password
-     * Strapi returns: { jwt: string, user: {...} }
+     * Login user
      */
     login: async (credentials: LoginCredentials) => {
         return withMockFallback<AuthResponse>(
             async () => {
-                // Strapi auth endpoint expects 'identifier' (email or username) and 'password'
                 const response = await strapiClient.post<{
                     jwt: string;
                     user: {
                         id: number;
                         username: string;
                         email: string;
+                        provider: string;
                         confirmed: boolean;
                         blocked: boolean;
-                    };
+                    }
                 }>('/auth/local', {
                     identifier: credentials.email,
                     password: credentials.password
                 });
 
-                // Transform Strapi response to our AuthResponse format
+                strapiClient.setToken(response.jwt);
+
                 return {
                     user: {
                         id: response.user.id.toString(),
                         name: response.user.username,
                         email: response.user.email,
-                        avatarUrl: `https://i.pravatar.cc/150?u=${response.user.email}` // Generate avatar
+                        avatarUrl: `https://i.pravatar.cc/150?u=${response.user.email}`
                     },
                     token: response.jwt,
-                    refreshToken: response.jwt // Strapi uses same JWT for both
+                    refreshToken: response.jwt
                 };
             },
             MOCK_AUTH_RESPONSE,

@@ -36,4 +36,7 @@ export const routes = {
     PLAYGROUND_ARTICLE_COMPONENTS: '/dev/playground/components/articlecomponents',
     PLAYGROUND_RECOMMENDED_ARTICLES: '/dev/playground/components/articlecomponents/recommended',
     PLAYGROUND_AUTHOR_CARD: '/dev/playground/components/articlecomponents/authorcard',
+
+    // Strapi Integration Test
+    strapiTest: '/dev/strapi-test',
 };

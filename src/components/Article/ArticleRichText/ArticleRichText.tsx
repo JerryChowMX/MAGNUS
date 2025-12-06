@@ -1,4 +1,5 @@
-import { StrapiRichTextBlock } from '../types';
+import React from 'react';
+import type { StrapiRichTextBlock } from '../types';
 
 interface ArticleRichTextProps {
     blocks: StrapiRichTextBlock[];

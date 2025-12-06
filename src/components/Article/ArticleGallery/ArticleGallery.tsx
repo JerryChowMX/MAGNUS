@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { StrapiGalleryImage } from '../types';
+import type { StrapiGalleryImage } from '../types';
 
 interface LightboxProps {
     images: StrapiGalleryImage[];

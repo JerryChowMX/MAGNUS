@@ -8,7 +8,12 @@ import { AiChatBarCollapsed } from '../../../components/AiChatBar/AiChatBarColla
 import { AiChatBarExpanded } from '../../../components/AiChatBar/AiChatBarExpanded';
 import { HeaderContent } from '../../../modules/noticiasHub/components/HeaderContent';
 import { ImageSlider } from '../../../components/Media/ImageSlider';
-import { AuthorCard } from '../../../components/Article/AuthorCard/AuthorCard';
+import {
+    ArticleAuthor,
+    ArticleGallery,
+    ArticleQuote,
+    ArticleRichText
+} from '../../../components/Article';
 import { RecommendedArticles } from '../../../components/Article/RecommendedArticles/RecommendedArticles';
 import type { ArticleStandard } from '../../../types/articles';
 import { STRAPI_ORIGIN } from '../../../lib/env';
@@ -108,24 +113,74 @@ export const StandardOneArticle: FC<StandardOneArticleProps> = ({ article }) => 
 
                 {/* 5. Article body text */}
                 <div style={{ padding: '0 16px 120px 16px' }}>
-                    {/* 
-                       DYNAMIC ZONES PROCESSING
-                       This is a simplified renderer. Ideally this would be a separate component.
-                     */}
                     {contentBlocks.map((block, index) => {
-                        // Handle Rich Text (common in Strapi)
-                        if (block.type === 'paragraph' || (block.__component === 'content.rich-text')) {
-                            // Strapi Richtext can be markdown or HTML. Assuming simple text/markdown for now based on Playground
-                            // If it's the Strapi Richtext block, content is in block.content
-                            const text = block.text || block.content;
+                        // Normalize the component name to handle various Strapi formats (e.g. 'article.quote', 'ComponentArticleQuote')
+                        const componentType = block.__component || block.__typename || block.type;
+
+                        // 1. RICH TEXT
+                        if (
+                            componentType?.includes('rich-text') ||
+                            componentType === 'paragraph' ||
+                            componentType === 'ComponentArticleRichText'
+                        ) {
+                            // Helper to normalize rich text blocks
+                            const richTextBlocks = block.blocks || (block.text ? [{ type: 'paragraph', content: block.text }] : []);
                             return (
-                                <div key={index} style={{ marginBottom: '16px' }}>
-                                    <Text variant="body" style={{ fontSize: '1.125rem', lineHeight: '1.75', color: '#1F2937' }}>
-                                        {text}
-                                    </Text>
-                                </div>
+                                <ArticleRichText
+                                    key={index}
+                                    blocks={richTextBlocks}
+                                />
                             );
                         }
+
+                        // 2. QUOTE
+                        if (
+                            componentType?.includes('quote') ||
+                            componentType === 'ComponentArticleQuote'
+                        ) {
+                            return (
+                                <ArticleQuote
+                                    key={index}
+                                    quote={block.quote}
+                                    author={block.author}
+                                />
+                            );
+                        }
+
+                        // 3. GALLERY
+                        if (
+                            componentType?.includes('gallery') ||
+                            componentType === 'ComponentArticleGallery'
+                        ) {
+                            // Normalize images to StrapiGalleryImage[]
+                            const images = (block.images?.data || block.images || []).map((img: any) => ({
+                                id: img.id,
+                                url: img.attributes?.url ? `${STRAPI_ORIGIN}${img.attributes.url}` : (img.url?.startsWith('http') ? img.url : `${STRAPI_ORIGIN}${img.url}`),
+                                caption: img.attributes?.caption || img.caption,
+                                alt: img.attributes?.alternativeText || img.alt
+                            }));
+
+                            return (
+                                <ArticleGallery
+                                    key={index}
+                                    images={images}
+                                />
+                            );
+                        }
+
+                        // 4. AUTHOR (Embedded)
+                        if (
+                            componentType?.includes('author') ||
+                            componentType === 'ComponentArticleAuthor'
+                        ) {
+                            return (
+                                <ArticleAuthor
+                                    key={index}
+                                    name={block.name}
+                                />
+                            );
+                        }
+
                         return null;
                     })}
 
@@ -136,12 +191,11 @@ export const StandardOneArticle: FC<StandardOneArticleProps> = ({ article }) => 
                     )}
                 </div>
 
-                {/* 6. Author Card (Minimal & Scalable) */}
+                {/* 6. Main Author Card (Footer) - Only show if not already embedded in blocks */}
                 <div style={{ padding: '0 16px 40px 16px' }}>
-                    <AuthorCard
+                    {/* We use the minimalist ArticleAuthor here as the default footer signature */}
+                    <ArticleAuthor
                         name={author.name}
-                        role={author.role || "Columnista"}
-                        avatarUrl={getImageUrl(author.avatarUrl || undefined)}
                     />
                 </div>
 

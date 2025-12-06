@@ -9,6 +9,7 @@ interface AuthContextType {
     isAuthenticated: boolean;
     isLoading: boolean;
     login: (credentials: LoginCredentials) => Promise<void>;
+    socialLogin: (token: string) => Promise<void>;
     logout: () => void;
 }
 
@@ -65,6 +66,26 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         }
     };
 
+    const socialLogin = async (jwt: string) => {
+        setIsLoading(true);
+        try {
+            strapiClient.setToken(jwt);
+            const { data: userData } = await authApi.getCurrentUser();
+
+            setUser(userData);
+            setToken(jwt);
+            localStorage.setItem(TOKEN_KEY, jwt);
+        } catch (error) {
+            console.error('Social login failed', error);
+            strapiClient.clearToken();
+            setToken(null);
+            setUser(null);
+            throw error;
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
     const logout = () => {
         // Call logout API (which clears strapiClient token)
         authApi.logout().catch(console.error);
@@ -82,10 +103,19 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
                 isAuthenticated: !!user,
                 isLoading,
                 login,
+                socialLogin,
                 logout
             }}
         >
             {children}
         </AuthContext.Provider>
     );
+};
+
+export const useAuth = () => {
+    const context = React.useContext(AuthContext);
+    if (context === undefined) {
+        throw new Error('useAuth must be used within an AuthProvider');
+    }
+    return context;
 };

@@ -5,7 +5,7 @@ import { PageWrapper } from '../components/Layout/PageWrapper';
 import { Heading, Text } from '../components/Typography/Typography';
 import { AuthProvider } from '../context/AuthContext';
 import { ProtectedRoute } from '../components/Auth/ProtectedRoute';
-
+import { getMonterreyDate } from '../lib/dateUtils';
 
 // Lazy load all page components
 const HomeHubsPage = lazy(() => import('../modules/home/pages/HomeHubsPage').then(module => ({ default: module.HomeHubsPage })));
@@ -31,6 +31,9 @@ const EpaperHubPage = lazy(() => import('../modules/epaper/pages/EpaperHubPage')
 const EpaperEditionPage = lazy(() => import('../modules/epaper/pages/EpaperEditionPage').then(module => ({ default: module.EpaperEditionPage })));
 
 const LoginPage = lazy(() => import('../modules/auth/pages/LoginPage').then(module => ({ default: module.LoginPage })));
+const SignupPage = lazy(() => import('../modules/auth/pages/SignupPage').then(module => ({ default: module.SignupPage })));
+const ForgotPasswordPage = lazy(() => import('../modules/auth/pages/ForgotPasswordPage').then(module => ({ default: module.ForgotPasswordPage })));
+const AuthCallbackPage = lazy(() => import('../modules/auth/pages/AuthCallbackPage').then(module => ({ default: module.AuthCallbackPage })));
 const PerfilHubPage = lazy(() => import('../modules/perfilHub/pages/PerfilHubPage').then(module => ({ default: module.PerfilHubPage })));
 
 // Playground & Staging
@@ -48,7 +51,7 @@ const PlaygroundRichText = lazy(() => import('../modules/playground/components/a
 const PlaygroundQuote = lazy(() => import('../modules/playground/components/articlecomponents/PlaygroundQuote').then(module => ({ default: module.PlaygroundQuote })));
 const PlaygroundGallery = lazy(() => import('../modules/playground/components/articlecomponents/PlaygroundGallery').then(module => ({ default: module.PlaygroundGallery })));
 const PlaygroundEmbed = lazy(() => import('../modules/playground/components/articlecomponents/PlaygroundEmbed').then(module => ({ default: module.PlaygroundEmbed })));
-const StrapiTestPage = lazy(() => import('../modules/noticiasHub/pages/StrapiTestPage')); // StrapiTestPage is likely default export based on usage
+const StrapiTestPage = lazy(() => import('../modules/noticiasHub/pages/StrapiTestPage'));
 const StandardOneRoute = lazy(() => import('./routes/article/StandardOneRoute').then(module => ({ default: module.StandardOneRoute })));
 
 const Articles = () => (
@@ -71,8 +74,6 @@ const RouteLoader = () => (
         <p>Loading...</p>
     </div>
 );
-
-import { getMonterreyDate } from '../lib/dateUtils';
 
 // Helper to redirect to today's date
 const RedirectToToday = () => {
@@ -97,6 +98,9 @@ export const AppRouter = () => {
                         <Route path={routes.articleList} element={<Articles />} />
                         <Route path="/articles/:slug" element={<ArticleDetail />} />
                         <Route path="/login" element={<LoginPage />} />
+                        <Route path={routes.signup} element={<SignupPage />} />
+                        <Route path={routes.forgotPassword} element={<ForgotPasswordPage />} />
+                        <Route path={routes.authCallback} element={<AuthCallbackPage />} />
 
                         {/* Noticias Hub Routes */}
                         <Route path="/NoticiasHub" element={<RedirectToToday />} />

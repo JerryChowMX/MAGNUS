@@ -5,6 +5,7 @@ import { TextInput } from '../../../components/Input/TextInput';
 import { Button } from '../../../components/Button/Button';
 import { Icons } from '../../../components/Icons';
 import { Caption } from '../../../components/Typography/Typography';
+import { routes } from '../../../app/routes';
 import './LoginForm.css';
 
 export const LoginForm: React.FC = () => {
@@ -43,6 +44,7 @@ export const LoginForm: React.FC = () => {
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
+                    autoComplete="email"
                     required
                 />
 
@@ -53,13 +55,17 @@ export const LoginForm: React.FC = () => {
                     onChange={(e) => setPassword(e.target.value)}
                     rightIcon={showPassword ? <Icons.eyeOff size={20} /> : <Icons.eye size={20} />}
                     onRightIconClick={() => setShowPassword(!showPassword)}
+                    autoComplete="current-password"
                     required
                 />
 
                 <div className="login-form__forgot">
-                    <Caption className="login-form__forgot-link">
-                        ¿Olvidaste tu contraseña?
-                    </Caption>
+                    <span
+                        onClick={() => navigate(routes.forgotPassword)}
+                        className="login-form__forgot-link"
+                    >
+                        <Caption>¿Olvidaste tu contraseña?</Caption>
+                    </span>
                 </div>
             </div>
 
@@ -77,7 +83,12 @@ export const LoginForm: React.FC = () => {
 
             <div className="login-form__register">
                 <Caption color="secondary">¿No tienes cuenta? </Caption>
-                <Caption className="login-form__register-link">Registrarte</Caption>
+                <span
+                    onClick={() => navigate(routes.signup)}
+                    className="login-form__register-link"
+                >
+                    <Caption>Registrarte</Caption>
+                </span>
             </div>
         </form>
     );

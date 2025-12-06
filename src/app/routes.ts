@@ -1,5 +1,12 @@
 export const routes = {
     home: "/",
+
+    // Authentication
+    login: "/login",
+    signup: "/signup",
+    forgotPassword: "/forgot-password",
+    authCallback: "/connect/:provider/redirect",
+
     articleList: "/articles",
     articleDetail: (slug: string) => `/articles/${slug}`,
     audio: "/audio",

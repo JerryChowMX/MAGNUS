@@ -44,7 +44,12 @@ const PlaygroundComponents = lazy(() => import('../modules/playground/Playground
 const PlaygroundArticleComponents = lazy(() => import('../modules/playground/components/articlecomponents/PlaygroundArticleComponents').then(module => ({ default: module.PlaygroundArticleComponents })));
 const PlaygroundRecommendedArticles = lazy(() => import('../modules/playground/components/articlecomponents/PlaygroundRecommendedArticles').then(module => ({ default: module.PlaygroundRecommendedArticles })));
 const PlaygroundAuthorCard = lazy(() => import('../modules/playground/components/articlecomponents/PlaygroundAuthorCard').then(module => ({ default: module.PlaygroundAuthorCard })));
+const PlaygroundRichText = lazy(() => import('../modules/playground/components/articlecomponents/PlaygroundRichText').then(module => ({ default: module.PlaygroundRichText })));
+const PlaygroundQuote = lazy(() => import('../modules/playground/components/articlecomponents/PlaygroundQuote').then(module => ({ default: module.PlaygroundQuote })));
+const PlaygroundGallery = lazy(() => import('../modules/playground/components/articlecomponents/PlaygroundGallery').then(module => ({ default: module.PlaygroundGallery })));
+const PlaygroundEmbed = lazy(() => import('../modules/playground/components/articlecomponents/PlaygroundEmbed').then(module => ({ default: module.PlaygroundEmbed })));
 const StrapiTestPage = lazy(() => import('../modules/noticiasHub/pages/StrapiTestPage')); // StrapiTestPage is likely default export based on usage
+const StandardOneRoute = lazy(() => import('./routes/article/StandardOneRoute').then(module => ({ default: module.StandardOneRoute })));
 
 const Articles = () => (
     <PageWrapper>
@@ -67,11 +72,13 @@ const RouteLoader = () => (
     </div>
 );
 
+import { getMonterreyDate } from '../lib/dateUtils';
+
 // Helper to redirect to today's date
 const RedirectToToday = () => {
     const location = useLocation();
-    // Get today's date in YYYY-MM-DD format (local time)
-    const today = new Date().toLocaleDateString('en-CA'); // en-CA gives YYYY-MM-DD
+    // Get today's date in YYYY-MM-DD format (Monterrey Time)
+    const today = getMonterreyDate();
 
     // Construct new path: /CurrentPath/YYYY-MM-DD
     // Ensure we don't double slash if location.pathname ends with /
@@ -141,6 +148,14 @@ export const AppRouter = () => {
                         <Route path={routes.PLAYGROUND_ARTICLE_COMPONENTS} element={<PlaygroundArticleComponents />} />
                         <Route path={routes.PLAYGROUND_RECOMMENDED_ARTICLES} element={<PlaygroundRecommendedArticles />} />
                         <Route path={routes.PLAYGROUND_AUTHOR_CARD} element={<PlaygroundAuthorCard />} />
+                        <Route path={routes.PLAYGROUND_RICH_TEXT} element={<PlaygroundRichText />} />
+                        <Route path={routes.PLAYGROUND_QUOTE} element={<PlaygroundQuote />} />
+                        <Route path={routes.PLAYGROUND_GALLERY} element={<PlaygroundGallery />} />
+                        <Route path={routes.PLAYGROUND_EMBED} element={<PlaygroundEmbed />} />
+
+                        {/* Staging Routes */}
+                        <Route path="/articulo/:slug" element={<StandardOneRoute />} />
+                        <Route path="/dev/staging/standard-one/:slug" element={<StandardOneRoute />} />
 
                         {/* Strapi Integration Test */}
                         <Route path={routes.strapiTest} element={<StrapiTestPage />} />

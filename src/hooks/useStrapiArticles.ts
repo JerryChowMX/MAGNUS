@@ -28,9 +28,12 @@ export interface StrapiArticle {
         name: string;
         slug: string;
     }>;
+    blocks?: any[];
+    summary?: string;
+    audioUrl?: string;
 }
 
-export const useStrapiArticles = (page = 1, pageSize = 10) => {
+export const useStrapiArticles = (page = 1, pageSize = 10, date?: string) => {
     const [data, setData] = useState<StrapiArticle[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<Error | null>(null);
@@ -40,7 +43,7 @@ export const useStrapiArticles = (page = 1, pageSize = 10) => {
             try {
                 setIsLoading(true);
                 setError(null);
-                const response = await articleApi.getArticles(page, pageSize);
+                const response = await articleApi.getArticles(page, pageSize, date);
                 setData(response.articles || []);
             } catch (err) {
                 setError(err instanceof Error ? err : new Error('Failed to load articles from Strapi'));
@@ -50,7 +53,34 @@ export const useStrapiArticles = (page = 1, pageSize = 10) => {
         };
 
         fetchArticles();
-    }, [page, pageSize]);
+    }, [page, pageSize, date]);
 
     return { data, isLoading, error };
+};
+
+export const useStrapiArticle = (slug: string) => {
+    const [data, setData] = useState<StrapiArticle | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState<Error | null>(null);
+
+    useEffect(() => {
+        if (!slug) return;
+
+        const fetchArticle = async () => {
+            try {
+                setIsLoading(true);
+                setError(null);
+                const article = await articleApi.getArticleBySlug(slug);
+                setData(article);
+            } catch (err) {
+                setError(err instanceof Error ? err : new Error('Failed to load article from Strapi'));
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchArticle();
+    }, [slug]);
+
+    return { article: data, isLoading, error };
 };

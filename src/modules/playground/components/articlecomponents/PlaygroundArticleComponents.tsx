@@ -43,6 +43,30 @@ export const PlaygroundArticleComponents = () => {
                         description="Author information card component."
                     />
 
+                    <PlaygroundLink
+                        to={routes.PLAYGROUND_RICH_TEXT}
+                        title="Rich Text"
+                        description="Rich Text renderer for handling complex content blocks (markdown, quotes, etc)."
+                    />
+
+                    <PlaygroundLink
+                        to={routes.PLAYGROUND_QUOTE}
+                        title="Quote"
+                        description="Stylized quote component for highlighted text."
+                    />
+
+                    <PlaygroundLink
+                        to={routes.PLAYGROUND_GALLERY}
+                        title="Gallery"
+                        description="Image gallery component handling multiple images."
+                    />
+
+                    <PlaygroundLink
+                        to={routes.PLAYGROUND_EMBED}
+                        title="Embed"
+                        description="Embed component for external content (videos, tweets, etc)."
+                    />
+
                 </div>
             </div>
         </PageWrapper>

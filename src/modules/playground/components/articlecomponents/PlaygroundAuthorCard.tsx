@@ -3,88 +3,65 @@ import { HeaderContent } from '../../../../modules/noticiasHub/components/Header
 import { Heading, Text } from '../../../../components/Typography/Typography';
 import { useNavigate } from 'react-router-dom';
 import { routes } from '../../../../app/routes';
-import { AuthorCard } from './AuthorCard';
 
 export const PlaygroundAuthorCard = () => {
     const navigate = useNavigate();
 
     return (
         <PageWrapper>
-            <div style={{ maxWidth: '480px', margin: '0 auto', width: '100%', minHeight: '100vh', backgroundColor: '#F9FAFB' }}>
+            <div style={{ maxWidth: '480px', margin: '0 auto', width: '100%', minHeight: '100vh', backgroundColor: '#fff' }}>
                 <HeaderContent
                     onBack={() => navigate(routes.PLAYGROUND_ARTICLE_COMPONENTS)}
                 />
 
                 <div style={{ padding: '24px' }}>
-                    <Heading level={1} style={{ fontSize: '1.5rem', marginBottom: 8 }}>Author Card</Heading>
-                    <Text variant="body" style={{ color: '#6B7280', marginBottom: 24 }}>
-                        Component for displaying author information in articles.
-                    </Text>
+                    <Heading level={2} style={{ marginBottom: '8px', fontSize: '1.25rem', color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                        Playground: Author
+                    </Heading>
+                    <Heading level={1} style={{ marginBottom: '32px', fontFamily: '"Blinker", sans-serif', fontWeight: 800, fontSize: '2.5rem', lineHeight: '1.1' }}>
+                        FINAL AUTHOR CARD
+                    </Heading>
 
-                    {/* Example 1: Full Featured */}
-                    <div style={{ marginBottom: 32 }}>
-                        <Text variant="body" style={{ fontWeight: 600, marginBottom: 12, display: 'block' }}>
-                            Full Featured
-                        </Text>
-                        <AuthorCard
-                            name="María González"
-                            role="Editora Senior"
-                            bio="Periodista especializada en política y economía con más de 15 años de experiencia cubriendo eventos nacionales e internacionales."
-                            avatarUrl="https://i.pravatar.cc/150?img=5"
-                            articleCount={127}
-                            followersCount={12500}
-                            onFollow={() => console.log('Follow clicked')}
-                            onViewProfile={() => console.log('View profile clicked')}
-                        />
+                    {/* Final Option: Minimalist */}
+                    <div style={{ marginBottom: '48px', maxWidth: '100%' }}>
+                        <div style={{
+                            padding: '32px 24px',
+                            backgroundColor: '#fff',
+                            textAlign: 'center',
+                            borderTop: '1px solid #E5E7EB',
+                            borderBottom: '1px solid #E5E7EB'
+                        }}>
+                            <span style={{
+                                display: 'block',
+                                fontFamily: '"Inter", sans-serif',
+                                fontSize: '0.75rem',
+                                textTransform: 'uppercase',
+                                letterSpacing: '0.1em',
+                                color: '#6B7280',
+                                marginBottom: '8px'
+                            }}>
+                                Por
+                            </span>
+                            <h4 style={{
+                                fontFamily: '"Blinker", sans-serif',
+                                fontSize: '1.75rem',
+                                fontWeight: 800,
+                                color: '#111827',
+                                margin: '0 0 16px 0',
+                                letterSpacing: '-0.02em',
+                                textTransform: 'uppercase'
+                            }}>
+                                CARLOS RAMÍREZ
+                            </h4>
+                            <div style={{
+                                width: '40px',
+                                height: '2px',
+                                backgroundColor: '#0076AB',
+                                margin: '0 auto'
+                            }} />
+                        </div>
                     </div>
 
-                    {/* Example 2: Without Avatar Image */}
-                    <div style={{ marginBottom: 32 }}>
-                        <Text variant="body" style={{ fontWeight: 600, marginBottom: 12, display: 'block' }}>
-                            With Placeholder Avatar
-                        </Text>
-                        <AuthorCard
-                            name="Carlos Ramírez"
-                            role="Corresponsal"
-                            bio="Reportero de investigación enfocado en temas de seguridad y justicia."
-                            articleCount={89}
-                            followersCount={8300}
-                            onFollow={() => console.log('Follow clicked')}
-                            onViewProfile={() => console.log('View profile clicked')}
-                        />
-                    </div>
-
-                    {/* Example 3: Minimal (No Bio, No Stats, No Actions) */}
-                    <div style={{ marginBottom: 32 }}>
-                        <Text variant="body" style={{ fontWeight: 600, marginBottom: 12, display: 'block' }}>
-                            Minimal Version (Square Avatar)
-                        </Text>
-                        <AuthorCard
-                            name="Ana Martínez"
-                            role="Columnista"
-                            avatarUrl="https://i.pravatar.cc/150?img=10"
-                            variant="square"
-                            centered
-                        />
-                    </div>
-
-                    {/* Example 4: Already Following */}
-                    <div style={{ marginBottom: 32 }}>
-                        <Text variant="body" style={{ fontWeight: 600, marginBottom: 12, display: 'block' }}>
-                            Already Following
-                        </Text>
-                        <AuthorCard
-                            name="Roberto Silva"
-                            role="Editor de Deportes"
-                            bio="Apasionado del deporte con cobertura en eventos olímpicos y mundiales."
-                            avatarUrl="https://i.pravatar.cc/150?img=12"
-                            articleCount={203}
-                            followersCount={25400}
-                            isFollowing={true}
-                            onFollow={() => console.log('Unfollow clicked')}
-                            onViewProfile={() => console.log('View profile clicked')}
-                        />
-                    </div>
                 </div>
             </div>
         </PageWrapper>

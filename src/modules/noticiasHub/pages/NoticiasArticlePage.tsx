@@ -7,25 +7,34 @@ import { HeaderContent } from '../components/HeaderContent';
 import { FormatSelectionGrid } from '../components/FormatSelectionGrid';
 import { ZoomableImage } from '../../../components/Media/ZoomableImage';
 import { AiChatBar } from '../../../components/AiChatBar';
-import { useNoticiasArticle } from '../hooks/useNoticiasArticle';
+import { useStrapiArticle } from '../../../hooks/useStrapiArticles';
 import { useShare } from '../../../hooks/useShare';
 import { ShareModal } from '../../../components/ShareModal';
 import { trackArticleView } from '../../../lib/analytics';
 import { useScrollTracking } from '../../../hooks/useScrollTracking';
+import { STRAPI_ORIGIN } from '../../../lib/env'; // Assuming env var is available or I will hardcode for now if env is not exposed
 import './NoticiasArticlePage.css';
+
+const DEFAULT_IMAGE = "https://images.unsplash.com/photo-1504711434969-e33886168f5c?q=80&w=2070&auto=format&fit=crop";
 
 export const NoticiasArticlePage: React.FC = () => {
     const { date, slug } = useParams<{ date: string; slug: string }>();
     const navigate = useNavigate();
-    const { article, isLoading, error } = useNoticiasArticle(slug || '');
+    // Use Strapi hook
+    const { article, isLoading, error } = useStrapiArticle(slug || '');
     const { handleShare, isModalOpen, closeModal, shareData } = useShare();
 
-    // Scroll Analytics
-    useScrollTracking(article?.id, 'noticias');
+    // Construct full image URL
+    const imageUrl = article?.hero_image?.url
+        ? `${STRAPI_ORIGIN}${article.hero_image.url}`
+        : DEFAULT_IMAGE;
+
+    // Scroll Analytics (using documentId as distinct ID)
+    useScrollTracking(article?.documentId, 'noticias');
 
     React.useEffect(() => {
         if (article) {
-            trackArticleView(article.id, 'noticias', undefined, 'home');
+            trackArticleView(article.documentId, 'noticias', undefined, 'home');
         }
     }, [article]);
 
@@ -39,7 +48,7 @@ export const NoticiasArticlePage: React.FC = () => {
                 onShare={() => article && handleShare({
                     title: article.title,
                     analytics: {
-                        articleId: article.id,
+                        articleId: article.documentId,
                         section: 'noticias',
                         format: undefined
                     }
@@ -49,7 +58,7 @@ export const NoticiasArticlePage: React.FC = () => {
             <Section padding="none">
                 <div className="noticias-article-hero">
                     <ZoomableImage
-                        src={article.imageUrl}
+                        src={imageUrl}
                         alt={article.title}
                         className="noticias-article-image"
                         caption={article.title}

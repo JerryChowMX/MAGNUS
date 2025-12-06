@@ -2,40 +2,57 @@ import { strapiClient } from "../api/strapiClient";
 import type { StrapiArticleAttributes, StrapiCollectionResponse, StrapiData, StrapiArticle } from "../types/strapi";
 
 // Helper to normalize Strapi response to frontend-friendly format
-function normalizeArticle(data: StrapiData<StrapiArticleAttributes>): StrapiArticle {
-  const attrs = data.attributes;
+function normalizeArticle(data: any): StrapiArticle {
+  if (!data) {
+    return {
+      documentId: 'unknown',
+      title: 'Untitled Article',
+      slug: 'untitled',
+      excerpt: '',
+      publishedAt: new Date().toISOString(),
+      reading_time: 0,
+    } as StrapiArticle;
+  }
+
+  // Strapi v5 - Data is flat, no "attributes" key for main fields
+  // Check if we are dealing with v4 style (has attributes) or v5 (flat)
+  const attrs = data.attributes || data;
+  const id = data.documentId || data.id?.toString();
+
   return {
-    documentId: data.id.toString(),
-    title: attrs.title,
-    slug: attrs.slug,
-    excerpt: attrs.excerpt,
+    documentId: id,
+    title: attrs.title || 'Untitled',
+    slug: attrs.slug || 'untitled',
+    excerpt: attrs.excerpt || '',
     publishedAt: attrs.publishedAt,
-    reading_time: attrs.reading_time,
-    hero_image: attrs.hero_image?.data ? {
-      url: attrs.hero_image.data.attributes.url,
-      alternativeText: attrs.hero_image.data.attributes.alternativeText || undefined
+    reading_time: attrs.reading_time || 0,
+    hero_image: attrs.hero_image ? {
+      url: attrs.hero_image.url || attrs.hero_image.data?.attributes?.url,
+      alternativeText: attrs.hero_image.alternativeText || attrs.hero_image.data?.attributes?.alternativeText
     } : undefined,
-    author: attrs.author?.data ? {
-      name: attrs.author.data.attributes.name,
-      slug: attrs.author.data.attributes.slug,
-      profile_picture: attrs.author.data.attributes.profile_picture?.data ? {
-        url: attrs.author.data.attributes.profile_picture.data.attributes.url
+    author: attrs.author ? {
+      name: attrs.author.name || attrs.author.data?.attributes?.name,
+      slug: attrs.author.slug || attrs.author.data?.attributes?.slug,
+      profile_picture: (attrs.author.profile_picture || attrs.author.data?.attributes?.profile_picture) ? {
+        url: attrs.author.profile_picture?.url || attrs.author.data?.attributes?.profile_picture?.data?.attributes?.url
       } : undefined
     } : undefined,
-    category: attrs.category?.data ? {
-      name: attrs.category.data.attributes.name,
-      slug: attrs.category.data.attributes.slug,
-      color: attrs.category.data.attributes.color
+    category: attrs.category ? {
+      name: attrs.category.name || attrs.category.data?.attributes?.name,
+      slug: attrs.category.slug || attrs.category.data?.attributes?.slug,
+      color: attrs.category.color || attrs.category.data?.attributes?.color
     } : undefined,
-    tags: attrs.tags?.data?.map(tag => ({
-      name: tag.attributes.name,
-      slug: tag.attributes.slug
-    })) || []
+    tags: (attrs.tags || attrs.tags?.data)?.map((tag: any) => ({
+      slug: tag.slug || tag.attributes?.slug
+    })) || [],
+    blocks: attrs.blocks || attrs.content || [],
+    summary: attrs.summary || attrs.excerpt || '',
+    audioUrl: attrs.audio?.url || attrs.audio_url || undefined
   };
 }
 
 export const articleApi = {
-  async getArticles(page = 1, pageSize = 10): Promise<{ articles: StrapiArticle[] }> {
+  async getArticles(page = 1, pageSize = 10, date?: string): Promise<{ articles: StrapiArticle[] }> {
     // Strapi REST API with proper query string format
     const params = new URLSearchParams({
       'populate': '*',
@@ -44,11 +61,26 @@ export const articleApi = {
       'pagination[pageSize]': pageSize.toString()
     });
 
+    // Add Date Filtering if provided (YYYY-MM-DD)
+    if (date) {
+      // Start of day (Monterrey/Mexico Time -06:00)
+      const startDate = `${date}T00:00:00.000-06:00`;
+      // End of day (Local Time -06:00)
+      const endDate = `${date}T23:59:59.999-06:00`;
+
+      params.append('filters[publishedAt][$gte]', startDate);
+      params.append('filters[publishedAt][$lte]', endDate);
+    }
+
     const response = await strapiClient.get<StrapiCollectionResponse<StrapiArticleAttributes>>(
       `/articles?${params.toString()}`
     );
 
-    return { articles: response.data.map(normalizeArticle) };
+    // For V5, data is the array directly or in .data
+    // const validArticles = response.data?.filter(item => item && item.attributes) || []; // Old V4 Check
+    const rawData = response.data || [];
+    // @ts-ignore
+    return { articles: rawData.map(normalizeArticle) };
   },
 
   async getArticleBySlug(slug: string): Promise<StrapiArticle | null> {

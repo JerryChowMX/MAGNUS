@@ -148,4 +148,7 @@ export interface StrapiArticle {
         name: string;
         slug: string;
     }>;
+    blocks?: any[];
+    summary?: string;
+    audioUrl?: string;
 }

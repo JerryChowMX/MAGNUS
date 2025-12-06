@@ -456,7 +456,7 @@ export interface ApiArticleArticle extends Struct.CollectionTypeSchema {
     epaper_link: Schema.Attribute.Component<'ai.epaper-link', false>;
     excerpt: Schema.Attribute.RichText &
       Schema.Attribute.SetMinMaxLength<{
-        maxLength: 500;
+        maxLength: 100;
       }>;
     executive_summary: Schema.Attribute.Component<
       'ai.executive-summary',

@@ -61,7 +61,11 @@ export const HeaderHubs: React.FC<HeaderHubsProps> = ({
     const handleDateChange = (date: Date | null) => {
         if (date) {
             // Format to YYYY-MM-DD
-            const formattedDate = date.toISOString().split('T')[0];
+            // Use local date part, do NOT use toISOString() which shifts to UTC
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            const formattedDate = `${year}-${month}-${day}`;
 
             // If onFilter is provided, use filter mode; otherwise navigate
             if (onFilter) {

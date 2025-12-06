@@ -5,9 +5,11 @@ import { Heading, Caption } from '../../../components/Typography/Typography';
 import { Button } from '../../../components/Button/Button';
 import './HomeHubsPage.css';
 
+import { getMonterreyDate } from '../../../lib/dateUtils';
+
 export const HomeHubsPage: React.FC = () => {
     const navigate = useNavigate();
-    const today = new Date().toISOString().split('T')[0];
+    const today = getMonterreyDate();
     const dateOptions: Intl.DateTimeFormatOptions = { weekday: 'long', day: 'numeric', month: 'long' };
     const formattedDate = new Date().toLocaleDateString('es-ES', dateOptions);
     // Capitalize first letter
